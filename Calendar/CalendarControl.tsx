@@ -17,7 +17,7 @@ import * as lcid from 'lcid';
 import * as Color from 'color'
 import {MobileToolbar, ToolbarColor} from './MobileToolbar'
 import { inherits } from 'util';
-import { FaHeart  } from "react-icons/fa";
+import { FaHeart, FaSmile  } from "react-icons/fa";
 
 var CustomWorkWeek = require('./MyWorkWeek');
 var isHexColor = require('is-hexcolor');
@@ -34,6 +34,7 @@ interface IEvent extends Event{
     id?: string,
     color?: string,
     filterType? : string, 
+    icon?: string,
 }
 
 const allViews  = ['month' , 'week' , 'work_week' , 'day' , 'agenda'] as string[];
@@ -96,7 +97,14 @@ React.useEffect(()=>{
             {
                 start: moment().toDate(),
                 end: moment().add(1, "hours").toDate(),
-                title: "Some title"
+                title: "Event 1",
+                icon: "icon1",
+            },
+            {
+                start: moment().add(1, "days").toDate(),
+                end:  moment().add(1, "days").add(1, "hours").toDate(),
+                title: "Event2",
+                icon: "icon2",
             }
         ], 
         keys: []
@@ -339,8 +347,8 @@ const _handleFilter = (selected: string) => {
 
 const EventComponent = () => (props) => {
     return (
-      <div className="rbc-event-content" title={props.event.title + ' \r\n' + props.event.type}>
-      <FaHeart style={{color: 'red', fontSize: '18px'}}/> {props.event.title}
+      <div className="rbc-event-content" title={props.event.title + ' \r\n' + props.event.icon}>
+        {props.event.icon === 'icon1'?  <FaHeart style={{color: 'red', fontSize: '18px'}}/> : <FaSmile style={{color: 'yellow', fontSize: '18px'}}/>} {props.event.title}
       </div>
     );
   };
