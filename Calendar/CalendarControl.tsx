@@ -17,7 +17,7 @@ import * as lcid from 'lcid';
 import * as Color from 'color'
 import {MobileToolbar, ToolbarColor} from './MobileToolbar'
 import { inherits } from 'util';
-
+import { FaHeart  } from "react-icons/fa";
 
 var CustomWorkWeek = require('./MyWorkWeek');
 var isHexColor = require('is-hexcolor');
@@ -87,7 +87,20 @@ React.useEffect(()=>{
             setCalendarData(await getCalendarData(props.pcfContext, keys));            
         }
     }        
-    asyncCalendarData();
+    //asyncCalendarData();
+    //testing data
+
+    setCalendarData({
+        resources: [], 
+        events: [
+            {
+                start: moment().toDate(),
+                end: moment().add(1, "hours").toDate(),
+                title: "Some title"
+            }
+        ], 
+        keys: []
+    });
 },
 [props.pcfContext.parameters.calendarDataSet.records]);
 
@@ -324,6 +337,14 @@ const _handleFilter = (selected: string) => {
 
 }
 
+const EventComponent = () => (props) => {
+    return (
+      <div className="rbc-event-content" title={props.event.title + ' \r\n' + props.event.type}>
+      <FaHeart style={{color: 'red', fontSize: '18px'}}/> {props.event.title}
+      </div>
+    );
+  };
+  
 
 const _handleOnView = (view: string) => {
     setCalendarView(getCalendarView(calendarViews, view));    
@@ -417,7 +438,8 @@ return(!calendarData?.resources ? <Calendar
         },
         //toolbar: MobileToolbar,
         timeGutterHeader: timeGutterHeader,
-        toolbar: MobileToolbar
+        toolbar: MobileToolbar,
+        event: EventComponent(),
     }}
     />: 
     <Calendar
@@ -449,7 +471,7 @@ return(!calendarData?.resources ? <Calendar
         resourceHeader: resourceHeader,
         timeGutterHeader: timeGutterHeader,
         toolbar: MobileToolbar,
-
+        event: EventComponent(),
     }}
     />);
 }

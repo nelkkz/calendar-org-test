@@ -21,8 +21,9 @@
     "moment": "^2.29.1",
     "office-ui-fabric-react": "^7.199.4",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
     "react-big-calendar": "^0.30.0",
+    "react-dom": "^17.0.2",
+    "react-icons": "^4.6.0",
     "react-multi-select-component": "^4.3.4",
     "react-swipeable": "^6.1.2"
   },
