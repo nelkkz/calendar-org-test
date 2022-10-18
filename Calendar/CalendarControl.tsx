@@ -10,7 +10,6 @@ import { useState } from 'react';
 import {IInputs} from "./generated/ManifestTypes";
 import DataSetInterfaces = ComponentFramework.PropertyHelper.DataSetApi;
 import { Calendar, momentLocalizer, Event, View, ViewsProps, Culture  } from 'react-big-calendar-ex'
-import Toolbar from "react-big-calendar-ex/lib/Toolbar";
 import GetMessages from './Translations'
 import * as moment from 'moment'
 import * as lcid from 'lcid';
@@ -362,7 +361,7 @@ const _handleFilter = (filter: any[]) => {
 
 }
 
-const EventComponent = () => (props) => {
+const EventComponent = () => (props: any) => {
     return (
       <div className="rbc-event-content" title={props.event.title + ' \r\n' + props.event.icon}>
         {props.event.icon === 'icon1'?  <FaHeart style={{color: 'red', fontSize: '18px'}}/> : <FaSmile style={{color: 'yellow', fontSize: '18px'}}/>} {props.event.title}
