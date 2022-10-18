@@ -72,6 +72,31 @@ const [calendarDataSave, setCalendarDataSave] = React.useState<{resources: any[]
 const [calendarDate, setCalendarDate] = React.useState(props.pcfContext.parameters.calendarDate?.raw?.getTime() === 0 ? moment().toDate() : (props.pcfContext.parameters.calendarDate?.raw || moment().toDate()));
 const calendarRef = React.useRef(null);
 
+const dummyData = [
+    {
+        start: moment().toDate(),
+        end: moment().add(1, "hours").toDate(),
+        title: "Event 1",
+        icon: "icon1",
+        filterType: "frontdesk" ,
+    },
+    {
+        start: moment().add(1, "days").toDate(),
+        end:  moment().add(1, "days").add(1, "hours").toDate(),
+        title: "Event2",
+        icon: "icon2",
+        filterType: "coach"
+    },
+    {
+        start: moment().add(2, "hours").toDate(),
+        end: moment().add(3, "hours").toDate(),
+        title: "Event 3",
+        icon: "icon1",
+        filterType: "frontdesk" ,
+    },
+    
+];
+
 //sets the keys and calendar data when the control is loaded or the calendarDataSet changes.
 React.useEffect(()=>{
     async function asyncCalendarData(){
@@ -93,22 +118,15 @@ React.useEffect(()=>{
 
     setCalendarData({
         resources: [], 
-        events: [
-            {
-                start: moment().toDate(),
-                end: moment().add(1, "hours").toDate(),
-                title: "Event 1",
-                icon: "icon1",
-            },
-            {
-                start: moment().add(1, "days").toDate(),
-                end:  moment().add(1, "days").add(1, "hours").toDate(),
-                title: "Event2",
-                icon: "icon2",
-            }
-        ], 
+        events: dummyData, 
         keys: []
     });
+
+    setCalendarDataSave({
+        resources: [], 
+        events: dummyData, 
+        keys: []
+    })
 },
 [props.pcfContext.parameters.calendarDataSet.records]);
 
@@ -324,23 +342,22 @@ const _handleNavigate = (date: Date, view: string, action: string) => {
     setCalendarDate(moment(date).toDate());    
 }
 
-const _handleFilter = (selected: string) => {    
+const _handleFilter = (filter: any[]) => {    
      //manipulate data by filter
-    console.log ('selected', selected);
-    //TODO filter data, update calendar state
+    console.log ('filter', filter);
 
-    /*
+    let filters = filter.map(a => a.value);
+    console.log ('filters', filters);
     const resources = calendarDataSave.resources;
-    const events = calendarDataSave.events.filter( e => e.filterType === action );
+    const events = calendarDataSave.events.filter( (e) => {return filters.indexOf(e.filterType) >= 0});
     const keys = calendarDataSave.keys;
-    
     
     setCalendarData({
         resources, 
         events,
         keys
     });
-    */
+    
     return;
 
 }
@@ -436,6 +453,7 @@ return(!calendarData?.resources ? <Calendar
     onSelectSlot={ _handleSlotSelect }
     onNavigate={ _handleNavigate }
     onView={ _handleOnView }
+    onFilter={ _handleFilter }
     ref={calendarRef}    
     className={`rbc-view-${calendarView}`}
     eventPropGetter={eventPropsGetter}
@@ -445,7 +463,7 @@ return(!calendarData?.resources ? <Calendar
           event: agendaEvent,
         },
         //toolbar: MobileToolbar,
-        timeGutterHeader: timeGutterHeader,
+      //  timeGutterHeader: timeGutterHeader,
         toolbar: MobileToolbar,
         event: EventComponent(),
     }}
@@ -465,6 +483,7 @@ return(!calendarData?.resources ? <Calendar
     onSelectSlot={ _handleSlotSelect }
     onNavigate={ _handleNavigate }
     onView={ _handleOnView }
+    onFilter={ _handleFilter }
     resources={calendarData.resources}
     resourceAccessor="resource"
     ref={calendarRef}    
@@ -477,7 +496,7 @@ return(!calendarData?.resources ? <Calendar
         },
         //toolbar: MobileToolbar,  
         resourceHeader: resourceHeader,
-        timeGutterHeader: timeGutterHeader,
+       // timeGutterHeader: timeGutterHeader,
         toolbar: MobileToolbar,
         event: EventComponent(),
     }}

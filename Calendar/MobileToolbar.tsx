@@ -12,7 +12,7 @@ import { IButtonStyles } from 'office-ui-fabric-react/lib/Button';
 import { memoizeFunction } from 'office-ui-fabric-react/lib/Utilities';
 import { initializeIcons } from '@uifabric/icons';
 import {useSwipeable} from 'react-swipeable';
-import { MultiSelect } from "react-multi-select-component";
+import { MultiSelect,Option } from "react-multi-select-component";
 
 const overflowProps: IButtonProps = { ariaLabel: 'More commands' };
 
@@ -112,15 +112,19 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
   const options = [
     { label: "Coach Event", value: "coach" },
     { label: "FrontDesk Event", value: "frontdesk"},
+    { label: "Manager Event", value: "manager" },
   ];
 
-  const [selected, setSelected] = React.useState([]);
+  const [selected, setSelected] = React.useState<Option[]>([
+    { label: "Coach Event", value: "coach" },
+    { label: "FrontDesk Event", value: "frontdesk"},
+    { label: "Manager Event", value: "manager" },
+  ]);
 
   const onSelectMulti = (selected: []) => {
     setSelected(selected);
-  //  props.onFilter('PREV');
+    props.onFilter(selected);
   }
-
            
   return (
     <div>
@@ -150,11 +154,13 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
 
       </div>
       <div className="rbc-toolbar">
-
+          Enter a date: 
+          
+          Filter event: 
           <MultiSelect
             options={options}
             value={selected}
-            labelledBy="Select"
+            labelledBy="Select event types"
             onChange={onSelectMulti}
             />
       </div>
