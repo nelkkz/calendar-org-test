@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import Week from 'react-big-calendar/lib/Week'
-import TimeGrid from 'react-big-calendar/lib/TimeGrid'
+import Week from 'react-big-calendar-ex/lib/Week'
+import TimeGrid from 'react-big-calendar-ex/lib/TimeGrid'
 
 function workWeekRange(date, options) {
   return Week.range(date, options).filter(    

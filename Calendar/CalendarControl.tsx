@@ -9,8 +9,8 @@ import * as React from 'react';
 import { useState } from 'react';
 import {IInputs} from "./generated/ManifestTypes";
 import DataSetInterfaces = ComponentFramework.PropertyHelper.DataSetApi;
-import { Calendar, momentLocalizer, Event, View, ViewsProps, Culture  } from 'react-big-calendar'
-import Toolbar from "react-big-calendar/lib/Toolbar";
+import { Calendar, momentLocalizer, Event, View, ViewsProps, Culture  } from 'react-big-calendar-ex'
+import Toolbar from "react-big-calendar-ex/lib/Toolbar";
 import GetMessages from './Translations'
 import * as moment from 'moment'
 import * as lcid from 'lcid';
