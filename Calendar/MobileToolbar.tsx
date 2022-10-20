@@ -121,9 +121,33 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
     { label: "Manager Event", value: "manager" },
   ]);
 
+  const optionsProvince = [
+    { label: "Ontario", value: "on" },
+    { label: "Alberta", value: "ab"},
+    { label: "Manitoba", value: "mn" },
+  ];
+
+  const [selectedProvince, setSelectedProvince] = React.useState<Option[]>([
+    { label: "Ontario", value: "on" },
+    { label: "Alberta", value: "ab"},
+    { label: "Manitoba", value: "mn" },
+  ]);
+
+
   const onSelectMulti = (selected: []) => {
     setSelected(selected);
     props.onFilter(selected);
+  }
+
+
+  const onSelectMultiProvince = (selected: []) => {
+    setSelectedProvince(selected);
+    props.onFilter(selected);
+  }
+
+  const selectedToString = (items: Option[]) => {
+    let values = items.map(a => a.value);
+    return values.join(',');
   }
            
   return (
@@ -163,6 +187,19 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
             labelledBy="Select event types"
             onChange={onSelectMulti}
             />
+
+          &nbsp;
+          Filter provice: 
+          <MultiSelect
+            options={optionsProvince}
+            value={selectedProvince}
+            labelledBy="Province"
+            onChange={onSelectMultiProvince}
+            />
+          &nbsp;<a href={"https://www.google.com?type=" 
+          + selectedToString(selected)
+          + "&province="
+          + selectedToString(selectedProvince)}>List view</a>
       </div>
     </div>
   )
