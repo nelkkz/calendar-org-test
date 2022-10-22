@@ -13,6 +13,7 @@ import { memoizeFunction } from 'office-ui-fabric-react/lib/Utilities';
 import { initializeIcons } from '@uifabric/icons';
 import {useSwipeable} from 'react-swipeable';
 import { MultiSelect,Option } from "react-multi-select-component";
+import { FaCheck  } from "react-icons/fa";
 
 const overflowProps: IButtonProps = { ariaLabel: 'More commands' };
 
@@ -149,7 +150,38 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
     let values = items.map(a => a.value);
     return values.join(',');
   }
-           
+  const formatDate = () : string => {
+    let d = new Date();
+    return [d.getFullYear(), d.getMonth() + 1, d.getDate()].join('-')
+  }
+
+  const [inputDate, inputDateSelected] = React.useState<string>('');
+
+  const handleInputDate = (e: any) => {
+    inputDateSelected(e.target.value);
+
+  }
+
+  const handleDateChange = () => {
+    const dateReg = /^\d{4}([./-])\d{2}\1\d{2}$/;
+
+    if (!inputDate.match(dateReg)) {
+      inputDateSelected('');
+      return;
+    }
+
+    const [year, month, day] = inputDate.split('-');
+    console.log('year, month, day', [year, month, day]);
+
+    const date = new Date(parseInt(year), parseInt(month)-1, parseInt(day));
+    console.log('date', date);
+    props.onNavigate('DATE',  date);
+  }
+
+  React.useEffect(()=>{
+    //inputDateSelected(formatDate());
+  });
+
   return (
     <div>
       <div className="rbc-toolbar">
@@ -179,7 +211,16 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
       </div>
       <div className="rbc-toolbar">
           Enter a date: 
-          
+          <input type="text" 
+            placeholder="yyyy-mm-dd"
+            value={inputDate} 
+            style={{'width': '140px'}}
+            onChange={handleInputDate} />
+          <button
+            onClick={handleDateChange}>
+            <FaCheck style={{color: 'grey', fontSize: '18px'}}/>
+          </button>
+
           Filter event: 
           <MultiSelect
             options={options}
