@@ -17,6 +17,8 @@ import * as Color from 'color'
 import {MobileToolbar, ToolbarColor} from './MobileToolbar'
 import { inherits } from 'util';
 import { FaHeart, FaSmile  } from "react-icons/fa";
+import ReactTooltip from 'react-tooltip';
+import PureModal from 'react-pure-modal';
 
 var CustomWorkWeek = require('./MyWorkWeek');
 var isHexColor = require('is-hexcolor');
@@ -36,7 +38,7 @@ interface IEvent extends Event{
     icon?: string,
 }
 
-const allViews  = ['month' , 'week' , 'work_week' , 'day' , 'agenda'] as string[];
+const allViews  = ['month' , 'week' , 'agenda'] as string[];
 
 export const CalendarControl: React.FC<IProps> = (props) => {      
 const eventDefaultBackgroundColor = Color(isHexColor(props.pcfContext.parameters.eventDefaultColor?.raw || '') ? props.pcfContext.parameters.eventDefaultColor.raw as string : '#3174ad');
@@ -71,6 +73,44 @@ const [calendarDataSave, setCalendarDataSave] = React.useState<{resources: any[]
 const [calendarDate, setCalendarDate] = React.useState(props.pcfContext.parameters.calendarDate?.raw?.getTime() === 0 ? moment().toDate() : (props.pcfContext.parameters.calendarDate?.raw || moment().toDate()));
 const calendarRef = React.useRef(null);
 
+const [modal, setModal] = useState(false);
+const [modalEvents, setModalEvents] = React.useState<IEvent[]>([]);
+
+type AppProps = {
+    modal: boolean;
+    modalEvents: IEvent[];
+}
+
+const ModalWithEvents = ({modal, modalEvents}: AppProps) => {
+    return (<PureModal
+    header="Event List"
+    isOpen={modal}
+    closeButton="close"
+    closeButtonPosition="header"
+    onClose={() => {
+      setModal(false);
+      return true;
+    }}
+  >
+  <ul className='event-list'>
+        {modalEvents.map((data) => (
+            <li>
+                <a data-tip data-for={data.title}>{data.title}</a>
+                <ReactTooltip id={data.title as string} place="top" type="dark" effect="float">
+                    <div>
+                        {data.title}
+                    </div>
+                    <div>
+                    {data.icon === 'icon1'?  <FaHeart style={{color: 'red', fontSize: '18px'}}/> : <FaSmile style={{color: 'yellow', fontSize: '18px'}}/>}
+                    </div>
+                    </ReactTooltip>
+            </li>
+        ))}
+      </ul>
+  </PureModal>)
+
+}
+
 const dummyData = [
     {
         start: moment().toDate(),
@@ -80,20 +120,110 @@ const dummyData = [
         filterType: "frontdesk" ,
     },
     {
-        start: moment().add(1, "days").toDate(),
-        end:  moment().add(1, "days").add(1, "hours").toDate(),
-        title: "Event2",
-        icon: "icon2",
-        filterType: "coach"
+        start: moment().toDate(),
+        end: moment().add(1, "hours").toDate(),
+        title: "Event 2",
+        icon: "icon1",
+        filterType: "frontdesk" ,
     },
     {
-        start: moment().add(2, "hours").toDate(),
-        end: moment().add(3, "hours").toDate(),
+        start: moment().toDate(),
+        end: moment().add(1, "hours").toDate(),
         title: "Event 3",
         icon: "icon1",
         filterType: "frontdesk" ,
     },
-    
+    {
+        start: moment().toDate(),
+        end: moment().add(1, "hours").toDate(),
+        title: "Event 4",
+        icon: "icon1",
+        filterType: "frontdesk" ,
+    },
+    {
+        start: moment().toDate(),
+        end: moment().add(1, "hours").toDate(),
+        title: "Event 5",
+        icon: "icon1",
+        filterType: "frontdesk" ,
+    },
+    {
+        start: moment().toDate(),
+        end: moment().add(1, "hours").toDate(),
+        title: "Event 6",
+        icon: "icon1",
+        filterType: "frontdesk" ,
+    },
+    {
+        start: moment().toDate(),
+        end: moment().add(1, "hours").toDate(),
+        title: "Event 7",
+        icon: "icon1",
+        filterType: "frontdesk" ,
+    },
+    {
+        start: moment().add(3, "days").toDate(),
+        end:  moment().add(1, "days").add(1, "hours").toDate(),
+        title: "Event AA",
+        icon: "icon2",
+        filterType: "coach"
+    },
+    {
+        start: moment().add(1, "days").toDate(),
+        end:  moment().add(1, "days").add(1, "hours").toDate(),
+        title: "Event A",
+        icon: "icon2",
+        filterType: "coach"
+    },
+    {
+        start: moment().add(1, "days").toDate(),
+        end:  moment().add(1, "days").add(1, "hours").toDate(),
+        title: "Event B",
+        icon: "icon2",
+        filterType: "coach"
+    },
+    {
+        start: moment().add(1, "days").toDate(),
+        end:  moment().add(1, "days").add(1, "hours").toDate(),
+        title: "Event C",
+        icon: "icon2",
+        filterType: "coach"
+    },
+    {
+        start: moment().add(1, "days").toDate(),
+        end:  moment().add(1, "days").add(1, "hours").toDate(),
+        title: "Event D",
+        icon: "icon2",
+        filterType: "coach"
+    },
+    {
+        start: moment().add(1, "days").toDate(),
+        end:  moment().add(1, "days").add(1, "hours").toDate(),
+        title: "Event E",
+        icon: "icon2",
+        filterType: "coach"
+    },
+    {
+        start: moment().add(1, "days").toDate(),
+        end:  moment().add(1, "days").add(1, "hours").toDate(),
+        title: "Event F",
+        icon: "icon2",
+        filterType: "coach"
+    },
+    {
+        start: moment().add(1, "days").toDate(),
+        end:  moment().add(1, "days").add(1, "hours").toDate(),
+        title: "Event G",
+        icon: "icon2",
+        filterType: "coach"
+    },
+    {
+        start: moment().add(1, "days").toDate(),
+        end:  moment().add(1, "days").add(1, "hours").toDate(),
+        title: "Event H",
+        icon: "icon2",
+        filterType: "coach"
+    },
 ];
 
 //sets the keys and calendar data when the control is loaded or the calendarDataSet changes.
@@ -276,6 +406,14 @@ const generateThemeCSS = () : string =>{
     .rmsc input[type=checkbox] {
         width:auto;
     }
+    .body-modal-fix{height:100%;width:100%;overflow:hidden}.pure-modal-backdrop{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1040;background-color:rgba(0,0,0,.4);display:flex;flex-direction:column;justify-content:center;align-items:center}.backdrop-overflow-hidden{overflow:hidden!important}.pure-modal-backdrop .pure-modal{width:300px;max-width:100%;box-sizing:border-box;transition:all .2s ease-in-out;max-height:100%}.pure-modal.auto-height{position:static}.pure-modal-backdrop.scrollable{overflow-y:auto}.pure-modal-backdrop .panel{display:grid;grid-template-rows:repeat(3,min-content)}.pure-modal-backdrop:not(.scrollable) .panel{grid-template-rows:min-content minmax(0,1fr) min-content;max-height:-moz-available;max-height:-webkit-fill-available;max-height:fill-available;height:100%}.pure-modal>*>*{flex:0 0 auto}.pure-modal>*>.scrollable{overflow-x:hidden;overflow-scrolling:touch}@media (max-width:480px){.pure-modal-backdrop .pure-modal{width:100%}}.pure-modal .panel-body{background-color:#fff}.pure-modal .panel-heading{background:#f0f0f0}.pure-modal .panel-title{padding:12px 45px 12px 15px;margin:0}.pure-modal .close{right:10px;top:10px;z-index:1;background:hsla(0,0%,94.1%,.8);width:30px;color:#8c8c8c;transition:color .1s ease-in-out;height:30px;border-radius:15px;text-align:center;line-height:30px;cursor:pointer}.pure-modal .panel-heading .close:hover{color:#000}.pure-modal .panel-body{padding:15px}.pure-modal .panel-footer{padding:12px 45px 12px 15px;background:#f0f0f0}.pure-modal .panel-body,.pure-modal .panel-footer,.pure-modal .panel-title{word-break:break-all}.pure-modal-backdrop .additional-row,.pure-modal-backdrop:not(.scrollable) .additional-row{display:grid;grid-template-rows:min-content minmax(0,1fr) min-content min-content}
+    .event-list {
+        padding: 0;
+        list-style-type: none;
+    }
+    .event-list li {
+        text-align: left;
+    }
     `;
 }
 
@@ -363,8 +501,19 @@ const _handleFilter = (filter: any[]) => {
 
 const EventComponent = () => (props: any) => {
     return (
-      <div className="rbc-event-content" title={props.event.title + ' \r\n' + props.event.icon}>
-        {props.event.icon === 'icon1'?  <FaHeart style={{color: 'red', fontSize: '18px'}}/> : <FaSmile style={{color: 'yellow', fontSize: '18px'}}/>} {props.event.title}
+      <div className="rbc-event-content">
+        <a data-tip data-for={props.event.title}>
+            {props.event.title}
+        </a>
+        <ReactTooltip id={props.event.title} place="top" type="dark" effect="float">
+            <div>
+                {props.event.title}
+            </div>
+            <div>
+            {props.event.icon === 'icon1'?  <FaHeart style={{color: 'red', fontSize: '18px'}}/> : <FaSmile style={{color: 'yellow', fontSize: '18px'}}/>}
+            </div>
+        </ReactTooltip>
+        
       </div>
     );
   };
@@ -436,7 +585,7 @@ const timeGutterHeader = ()=> {
     ) 
 }
 
-return(!calendarData?.resources ? <Calendar    
+return(!calendarData?.resources ? <><Calendar    
     selectable
     localizer={localizer}
     date={calendarDate}
@@ -453,6 +602,8 @@ return(!calendarData?.resources ? <Calendar
     onNavigate={ _handleNavigate }
     onView={ _handleOnView }
     onFilter={ _handleFilter }
+    onShowMore={(events, date) => {setModal(true);setModalEvents(events);}}
+    doShowMoreDrillDown={false}
     ref={calendarRef}    
     className={`rbc-view-${calendarView}`}
     eventPropGetter={eventPropsGetter}
@@ -466,8 +617,14 @@ return(!calendarData?.resources ? <Calendar
         toolbar: MobileToolbar,
         event: EventComponent(),
     }}
-    />: 
-    <Calendar
+    />
+    <ModalWithEvents
+        modal={modal}
+        modalEvents={modalEvents}
+    />
+    </>: 
+    
+    <><Calendar
     selectable
     localizer={localizer}
     date={calendarDate}
@@ -483,6 +640,8 @@ return(!calendarData?.resources ? <Calendar
     onNavigate={ _handleNavigate }
     onView={ _handleOnView }
     onFilter={ _handleFilter }
+    onShowMore={(events, date) => {setModal(true);setModalEvents(events);}}
+    doShowMoreDrillDown={false}
     resources={calendarData.resources}
     resourceAccessor="resource"
     ref={calendarRef}    
@@ -499,7 +658,12 @@ return(!calendarData?.resources ? <Calendar
         toolbar: MobileToolbar,
         event: EventComponent(),
     }}
-    />);
+    />
+    <ModalWithEvents
+        modal={modal}
+        modalEvents={modalEvents}
+    />
+    </>);
 }
 
 //gets all the fields names and other keys will will need while processing the data
