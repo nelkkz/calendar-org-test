@@ -1,4 +1,4 @@
-import { Messages } from 'react-big-calendar-ex'
+import { Messages } from 'react-big-calendar'
 
 export default function GetMessages(lang: string): Messages{
     //check to see if full localized language (en-US) was sent in.
@@ -20,12 +20,7 @@ export default function GetMessages(lang: string): Messages{
                 yesterday: 'hier',
                 tomorrow: 'demain',
                 today: `aujourd'hui`,
-                agenda: 'ordre du jour',      
-                listview: 'Liste',
-                province: 'Province',
-                programarea: `Ligne d'affaires`,
-                eventtype: `Type d'événement`,
-                enterdate: 'Entrer une date',
+                agenda: 'ordre du jour',              
                 noEventsInRange: `Il n'y a aucun événement dans cette gamme.`,              
                 showMore: total => `+${total} événement(s) supplémentaire(s)`
             }
@@ -44,12 +39,7 @@ export default function GetMessages(lang: string): Messages{
                 yesterday: 'Gestern',
                 tomorrow: 'Morgen',
                 today: 'Heute',
-                agenda: 'Agenda',
-                listview: 'List View',
-                province: 'Province',
-                programarea: `Program Area`,
-                eventtype: `Event Type`,
-                enterdate: 'Enter a date',      
+                agenda: 'Agenda',              
                 noEventsInRange: 'Es gibt keine Ereignisse in diesem Bereich.',              
                 showMore: total => `Weitere +${total}`
             }
@@ -68,12 +58,7 @@ export default function GetMessages(lang: string): Messages{
                     yesterday: 'Ayer',
                     tomorrow: 'Mañana',
                     today: 'Hoy',
-                    agenda: 'Calendario',
-                    listview: 'List View',
-                    province: 'Province',
-                    programarea: `Program Area`,
-                    eventtype: `Event Type`,
-                    enterdate: 'Enter a date',         
+                    agenda: 'Calendario',              
                     noEventsInRange: 'No hay elementos programados en el intervalo de fechas.',              
                     showMore: total => `+${total} más`
                 }
@@ -93,11 +78,6 @@ export default function GetMessages(lang: string): Messages{
             tomorrow: 'Domani',
             today: 'Oggi',
             agenda: 'Calendario',
-            listview: 'List View',
-            province: 'Province',
-            programarea: `Program Area`,
-            eventtype: `Event Type`,
-            enterdate: 'Enter a date',
             noEventsInRange: 'Non ci sono eventi in queste date.',
             showMore: total => `+${total} altri`
             }
@@ -117,11 +97,6 @@ export default function GetMessages(lang: string): Messages{
             tomorrow: 'Завтра',
             today: 'Cегодня',
             agenda: 'Повестка дня',
-            listview: 'List View',
-            province: 'Province',
-            programarea: `Program Area`,
-            eventtype: `Event Type`,
-            enterdate: 'Enter a date',  
             noEventsInRange: 'В этом диапазоне нет событий.',
             showMore: total => `Еще +${total} события`
             }
@@ -140,12 +115,7 @@ export default function GetMessages(lang: string): Messages{
                 yesterday: 'Gisteren',
                 tomorrow: 'Morgen',
                 today: 'Vandaag',
-                agenda: 'Agenda',
-                listview: 'List View', 
-                province: 'Province',
-                programarea: `Program Area`,
-                eventtype: `Event Type`,
-                enterdate: 'Enter a date',          
+                agenda: 'Agenda',              
                 noEventsInRange: 'Er zijn geen evenementen gepland in deze periode.',              
                 showMore: total => `+${total} meer`
             }        
@@ -165,12 +135,7 @@ export default function GetMessages(lang: string): Messages{
                 yesterday: 'Yesterday',
                 tomorrow: 'Tomorrow',
                 today: 'Today',
-                agenda: 'Agenda',
-                listview: 'List View',
-                province: 'Province',
-                programarea: `Program Area`,
-                eventtype: `Event Type`,
-                enterdate: 'Enter a date',
+                agenda: 'Agenda',              
                 noEventsInRange: 'There are no events in this range.',              
                 showMore: total => `+${total} more`
             }

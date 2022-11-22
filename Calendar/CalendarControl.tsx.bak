@@ -9,15 +9,15 @@ import * as React from 'react';
 import { useState } from 'react';
 import {IInputs} from "./generated/ManifestTypes";
 import DataSetInterfaces = ComponentFramework.PropertyHelper.DataSetApi;
-import { Calendar, momentLocalizer, Event, View, ViewsProps, Culture } from 'react-big-calendar-ex';
+import { Calendar, momentLocalizer, Event, View, ViewsProps, Culture  } from 'react-big-calendar-ex'
 import GetMessages from './Translations'
 import * as moment from 'moment'
 import * as lcid from 'lcid';
 import * as Color from 'color'
 import {MobileToolbar, ToolbarColor} from './MobileToolbar'
 import { inherits } from 'util';
-import { FaRegCalendarAlt, FaRegCalendarCheck, FaRegCalendarPlus, FaRegCalendar } from "react-icons/fa";
-import { WindowContext } from '@fluentui/react';
+import { FaHeart, FaSmile  } from "react-icons/fa";
+
 var CustomWorkWeek = require('./MyWorkWeek');
 var isHexColor = require('is-hexcolor');
 
@@ -32,10 +32,8 @@ export interface IProps {
 interface IEvent extends Event{
     id?: string,
     color?: string,
-    filterProg?: string,
-    filterType?: string,
-    filterProv?: string,
-    icon?: string
+    filterType? : string, 
+    icon?: string,
 }
 
 const allViews  = ['month' , 'week' , 'work_week' , 'day' , 'agenda'] as string[];
@@ -69,6 +67,7 @@ const calendarScrollTo = moment().set({"hour": props.pcfContext.parameters.calen
 const [calendarView, setCalendarView] = React.useState(getCalendarView(calendarViews, props.pcfContext.parameters.calendarView?.raw || ""));
 const [calendarData, setCalendarData] = React.useState<{resources: any[] | undefined, events: IEvent[], keys: any}>({resources: [], events: [], keys: undefined});
 const [calendarDataSave, setCalendarDataSave] = React.useState<{resources: any[] | undefined, events: IEvent[], keys: any}>({resources: [], events: [], keys: undefined});
+
 const [calendarDate, setCalendarDate] = React.useState(props.pcfContext.parameters.calendarDate?.raw?.getTime() === 0 ? moment().toDate() : (props.pcfContext.parameters.calendarDate?.raw || moment().toDate()));
 const calendarRef = React.useRef(null);
 
@@ -110,8 +109,7 @@ React.useEffect(()=>{
         //console.log(`asyncCalendarData: dataSet.sortedRecordIds.length: ${dataSet.sortedRecordIds.length}`)
         if (dataSet.loading === false)
         {
-            setCalendarData(await getCalendarData(props.pcfContext, keys));
-            setCalendarDataSave(await getCalendarData(props.pcfContext, keys));            
+            setCalendarData(await getCalendarData(props.pcfContext, keys));            
         }
     }        
     //asyncCalendarData();
@@ -256,10 +254,9 @@ const generateThemeCSS = () : string =>{
     .rbc-view-day .rbc-time-view .rbc-allday-cell {
         width: 140px;
     }
-    .rbc-button-link { border-width: 0px; border-color: #f0f0f0;background-color:#f5f5f5;}
     .rmsc {
         text-align: left;
-        width: 210px;
+        width: 300px;
         z-index: 999;
         --rmsc-main: #4285f4;
         --rmsc-hover: #f1f3f5;
@@ -269,7 +266,7 @@ const generateThemeCSS = () : string =>{
         --rmsc-bg: #fff;
         --rmsc-p: 10px; /* Spacing */
         --rmsc-radius: 4px; /* Radius */
-        --rmsc-h: 28px; /* Height */
+        --rmsc-h: 38px; /* Height */
     }
     .rmsc .select-item {
         text-align: left;
@@ -278,7 +275,7 @@ const generateThemeCSS = () : string =>{
     }
     .rmsc input[type=checkbox] {
         width:auto;
-    }    
+    }
     `;
 }
 
@@ -290,25 +287,11 @@ const _handleEventSelected = (event: IEvent) => {
 
     //if we are in a model app open the record when it's selected.
     if (props.pcfContext.mode.allocatedHeight === -1){
-        //props.pcfContext.navigation.openForm({
-        //    entityId: eventId, 
-        //    entityName: props.pcfContext.parameters.calendarDataSet.getTargetEntityType(),
-        //    openInNewWindow: false,
-        //    useQuickCreateForm: true
-        //});
-
-        var pageInput = {
-            pageType: "entityrecord",
+        props.pcfContext.navigation.openForm({
+            entityId: eventId, 
             entityName: props.pcfContext.parameters.calendarDataSet.getTargetEntityType(),
-            entityId: eventId
-        };
-        var navigationOptions = {
-            target: 2,
-            width: {value: 500, unit:"px"},
-            position: 2
-        };
-        (props.pcfContext.navigation as any).navigateTo(pageInput, navigationOptions).then(function success() { }, function error() { });
-
+            openInNewWindow: false
+        });
     }
 }
 
@@ -331,77 +314,61 @@ const _handleSlotSelect = (slotInfo: any) => {
         }    
         props.pcfContext.navigation.openForm({            
             entityName: props.pcfContext.parameters.calendarDataSet.getTargetEntityType(),
-            openInNewWindow: false,
-            useQuickCreateForm: true           
+            openInNewWindow: false,            
         }, newRecordProperties);
     }
 }
 
 //required event when using a variable for the Calendar Date
-const _handleNavigate = (date: Date, view: string, action: string) => {  
-    //const viewid = props.pcfContext.parameters.calendarDataSet.getViewId();
-    //alert(viewid);
-    if(action === "LISTVIEW"){
-        var openUrlOptions = { height: 600, width: 1100 };
-        //&appid=02fa0613-e620-487a-87da-e69740297de1
-        props.pcfContext.navigation.openUrl( "./main.aspx?appid=02fa0613-e620-487a-87da-e69740297de1&forceUCI=1&pagetype=entitylist&etn=tc_yyevent&viewid=b8152d4f-4f51-ed11-bba3-002248d51737&viewType=1039");
-    }
-    setCalendarDate(moment(date).toDate());
+const _handleNavigate = (date: Date, view: string, action: string) => {    
+    if (action === 'coach' || action === 'frontdesk' || action === 'all') {
+        //manipulate data by filter
+        alert (action);
+
+        const resources = calendarDataSave.resources;
+        const events = calendarDataSave.events.filter( e => e.filterType === action );
+        const keys = calendarDataSave.keys;
+       
+        setCalendarData({
+            resources, 
+            events,
+            keys
+        });
+        
+        return;
+
+    } 
+    setCalendarDate(moment(date).toDate());    
 }
 
-const _handleFilter_p = (filter: any[]) => {    
-    //manipulate data by filter
-    let filters = filter.map(a => a.value);
-    //console.log('filters', filters);
-    
-    const resources = calendarDataSave.resources;
-    let events = calendarDataSave.events;
-    //console.log('events', events);
-    if(filters.length > 0){
-        if(filters.toString().indexOf("t") >= 0){
-            //console.log('type', filters);
-            events = calendarDataSave.events.filter( (e) => {return filters.indexOf("t"+e.filterType+"_") > -1} );
-        }else if(filters.toString().indexOf("r") >= 0){
-            //console.log('prov', filters);
-            events = calendarDataSave.events.filter( (e) => {return filters.indexOf("r"+e.filterProv) > -1} );
-        }else{
-            //console.log('prog', filters);
-            events = calendarDataSave.events.filter( (e) => { return filters.indexOf(e.filterProg) > -1});
-        }
-        
-    }else{
-        events = Array();
-    }
+const _handleFilter = (filter: any[]) => {    
+     //manipulate data by filter
+    console.log ('filter', filter);
 
-    const keys = calendarDataSave.keys;                                                                            
+    let filters = filter.map(a => a.value);
+    console.log ('filters', filters);
+    const resources = calendarDataSave.resources;
+    const events = calendarDataSave.events.filter( (e) => {return filters.indexOf(e.filterType) >= 0});
+    const keys = calendarDataSave.keys;
+    
     setCalendarData({
-       resources, 
-       events,
-       keys
+        resources, 
+        events,
+        keys
     });
+    
     return;
+
 }
 
 const EventComponent = () => (props: any) => {
-    var iconTag = "";
-    if((props.event.icon === 'TC-ECH')){
-        iconTag = "<FaRegCalendar style=\"color: 'green', fontSize: '18px'\"/>";
-    }else if (props.event.icon === 'OPP'){
-        iconTag = "<FaRegCalendarAlt style=\"color: 'yellow', fontSize: '18px'\"/>";
-    }else if (props.event.icon === 'IR'){
-        iconTag = "<FaRegCalendarCheck style=\"color: 'blue', fontSize: '18px'\"/>";
-    }else{
-        iconTag = "<FaRegCalendarPlus style=\"color: 'purple', fontSize: '18px'\"/>";
-    }
-    //{props.event.icon === 'TC-ECH'?  <FaRegCalendar style={{color: 'green', fontSize: '18px'}}/> : <FaRegCalendar style={{color: 'yellow', fontSize: '18px'}}/>} {props.event.title}
-
     return (
       <div className="rbc-event-content" title={props.event.title + ' \r\n' + props.event.icon}>
-        {props.event.icon === 'TC-ECH'?  <FaRegCalendar style={{color: 'green', fontSize: '18px'}}/> : props.event.icon === 'OPP' ? <FaRegCalendarAlt style={{color: 'yellow', fontSize: '18px'}}/> : <FaRegCalendarCheck style={{color: 'blue', fontSize: '18px'}}/>} {props.event.title}
+        {props.event.icon === 'icon1'?  <FaHeart style={{color: 'red', fontSize: '18px'}}/> : <FaSmile style={{color: 'yellow', fontSize: '18px'}}/>} {props.event.title}
       </div>
     );
-};
-
+  };
+  
 
 const _handleOnView = (view: string) => {
     setCalendarView(getCalendarView(calendarViews, view));    
@@ -485,7 +452,7 @@ return(!calendarData?.resources ? <Calendar
     onSelectSlot={ _handleSlotSelect }
     onNavigate={ _handleNavigate }
     onView={ _handleOnView }
-    onFilter={ _handleFilter_p }
+    onFilter={ _handleFilter }
     ref={calendarRef}    
     className={`rbc-view-${calendarView}`}
     eventPropGetter={eventPropsGetter}
@@ -494,8 +461,9 @@ return(!calendarData?.resources ? <Calendar
         agenda: {
           event: agendaEvent,
         },
+        //toolbar: MobileToolbar,
+      //  timeGutterHeader: timeGutterHeader,
         toolbar: MobileToolbar,
-        timeGutterHeader: timeGutterHeader,
         event: EventComponent(),
     }}
     />: 
@@ -514,7 +482,7 @@ return(!calendarData?.resources ? <Calendar
     onSelectSlot={ _handleSlotSelect }
     onNavigate={ _handleNavigate }
     onView={ _handleOnView }
-    onFilter={ _handleFilter_p }
+    onFilter={ _handleFilter }
     resources={calendarData.resources}
     resourceAccessor="resource"
     ref={calendarRef}    
@@ -525,10 +493,11 @@ return(!calendarData?.resources ? <Calendar
         agenda: {
           event: agendaEvent,
         },
-        toolbar: MobileToolbar,  
+        //toolbar: MobileToolbar,  
         resourceHeader: resourceHeader,
-        timeGutterHeader: timeGutterHeader,
-        event:EventComponent(),        
+       // timeGutterHeader: timeGutterHeader,
+        toolbar: MobileToolbar,
+        event: EventComponent(),
     }}
     />);
 }
@@ -562,11 +531,6 @@ async function getKeys(pcfContext: ComponentFramework.Context<IInputs>) : Promis
         name: params.eventFieldName.raw ? getFieldName(dataSet, params.eventFieldName.raw) : "",
         start: params.eventFieldStart.raw ? getFieldName(dataSet, params.eventFieldStart.raw) : "",
         end: params.eventFieldEnd.raw ? getFieldName(dataSet, params.eventFieldEnd.raw) : "",
-        evprogram: "tc_app",
-        evtype: "tc_eventtypecd",
-        evprovince: "tc_province",
-        evdesc: "tc_eventtxt",
-        evregion: "tc_multiregions",
         eventColor: params.eventColor.raw ? getFieldName(dataSet, params.eventColor.raw) : "",
         resource: resource,
         resourceName: resourceName,
@@ -686,30 +650,14 @@ async function getEvents(pcfContext: ComponentFramework.Context<IInputs>, resour
             var name = record.getValue(keys.name) as string;
 			var start = record.getValue(keys.start);
             var end = record.getValue(keys.end);                        
-            var evprogram = record.getValue(keys.evprogram);
-            var evtype = record.getValue(keys.evtype); 
-            var evprovince = record.getValue(keys.evprovince); 
 
             if (!name || !start || !end) continue;
-            var evprogramname = getProgramName(!evprogram?"":evprogram.toString()); 
-            var name2 = record.getValue(keys.evdesc); 
-            var regions = record.getValue(keys.evregion); 
-            var regions2 = "";
-            if (regions) {
-                regions2 = getRegionName(regions.toString());
-            }
-
-            name = name + "\n " + evprogramname + "\n Regions:" + regions2 + "\n Start Time:" + getDateFormat(start.toString()) + "\n End Time:" + getDateFormat(end.toString()) + "\n " + (name2==null?"":name2);
 
             let newEvent: IEvent = {
                 id: keys.id ? record.getValue(keys.id) as string || recordId : recordId,
                 start: new Date(start as number),
                 end: new Date(end as number),
-                title: name,
-                icon: getShortProgramName(evprogramname),
-                filterProg: evprogram ? evprogram.toString() : "",
-                filterType: evtype ? evtype.toString() : "",
-                filterProv: evprovince ? evprovince.toString() : ""
+                title: name
             };
 
             let color = record.getValue(keys.eventColor);
@@ -821,171 +769,4 @@ function getISOLanguage(pcfContext: ComponentFramework.Context<IInputs>): string
     }
 
     return lang;
-}
-
-function getProgramName(programKey : string) : string
-{
-    let s = "";
-    if(programKey == "948010000"){
-        s = "TC-ECH";
-    }else if (programKey == "948010001"){
-        s = "Ocean Protection Plan (OPP)";
-    }else if (programKey == "948010002"){
-        s = "Indigenous Relations (IR)";
-    }else if (programKey == "948010003"){
-        s = "Rail Safety (RS)";
-    }else if (programKey == "948010004"){
-        s = "TDG Secretariat";
-    }else if (programKey == "948010005"){
-        s = "TDG Safety Awareness";
-    }
-    return s;
-}
-
-function getShortProgramName(programKey : string) : string
-{
-    let s = "";
-    if(programKey == "TC-ECH"){
-        s = "TC-ECH";
-    }else if (programKey == "Ocean Protection Plan (OPP)"){
-        s = "OPP";
-    }else if (programKey == "Indigenous Relations (IR)"){
-        s = "IR";
-    }else if (programKey == "Rail Safety (RS)"){
-        s = "RS";
-    }else if (programKey == "TDG Secretariat"){
-        s = "TDG-S";
-    }else if (programKey == "TDG Safety Awareness"){
-        s = "TDG-SA";
-    }
-    return s;
-}
-
-function getEventTypeName(tKey : string) : string
-{
-    let s = "";
-    if(tKey == "948010002"){
-        s = "Assembly";
-    }else if (tKey == "13"){
-        s = "Bilateral Meeting";
-    }else if (tKey == "7"){
-        s = "Capacity Development Activities";
-    }else if (tKey == "4"){
-        s = "Conference";
-    }else if (tKey == "8"){
-        s = "Coordination";
-    }else if (tKey == "948010003"){
-        s = "Informal Meeting";
-    }else if (tKey == "12"){
-        s = "Inspections";
-    }else if (tKey == "2"){
-        s = "Meeting";
-    }else if (tKey == "948010000"){
-        s = "Multilateral";
-    }else if (tKey == "948010001"){
-        s = "Mutual Recognition";
-    }else if (tKey == "10"){
-        s = "Other";
-    }else if (tKey == "1"){
-        s = "Panel";
-    }else if (tKey == "5"){
-        s = "Symposium";
-    }else if (tKey == "6"){
-        s = "Task Force";
-    }else if (tKey == "3"){
-        s = "Working Group";
-    }else if (tKey == "9"){
-        s = "Workshop";
-    }else if (tKey == "948010004"){
-        s = "Virtual Meeting";
-    }
-    return s;
-}
-
-function getRegionName(regKey : string) : string
-{
-    const myArray = regKey.split(",");
-    let s = "";
-    let myArray2 = Array(); 
-    // element = myReplace(element)
-    myArray.forEach((element) => { myArray2.push(myReplace(element)) });
-
-    return myArray2.toString();
-}
-
-function myReplace(item : string) : string
-{
-    let s = "";
-    switch (item){
-        case "948010000":
-            s = "Arctic";
-            break;
-        case "948010001":
-            s = "Atlantic Bay of Fundy";
-            break;
-        case "948010002":
-            s = "Atlantic South Coast NL";
-            break;
-        case "948010003":
-            s = "Atlantic";
-            break;            
-        case "948010004":
-            s = "National Capital Region";
-            break;
-        case "948010005":
-            s = "Ontario";
-            break;
-        case "948010006":
-            s = "Pacific North Coast";
-            break;
-        case "948010007":
-            s = "Pacific South Coast";
-            break;           
-        case "948010008":
-            s = "Pacific Vancouver Island";
-            break;
-        case "948010009":
-            s = "PNR";
-            break;
-        case "948010010":
-            s = "Quebec";
-            break;
-        case "1":
-            s = "Pacific";
-            break;            
-        case "2":
-            s = "Prairie and Northern Region";
-            break;
-        case "3":
-            s = "Ontario";
-            break;
-        case "4":
-            s = "Quebec";
-            break;
-        case "5":
-            s = "Atlantic";
-            break;  
-        case "6":
-            s = "National Capital Region";
-            break;
-        case "7":
-            s = "National";
-            break;
-        case "8":
-            s = "International";
-            break; 
-        default: 
-            s = "";
-    }
-    return s;
-}
-
-function getDateFormat(d : string) : string
-{
-    let s = ""; // d.toDateString();
-    if(d != null && d.length > 18){
-        s = d.substring(0,10) + " " + d.substring(11,19);
-    }
-    
-    return s;
 }

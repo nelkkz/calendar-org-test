@@ -74,7 +74,7 @@ export type DayLayoutFunction<TEvent extends object = Event> = (_: {
     accessors: any;
 }) => Array<{ event: TEvent; style: React.CSSProperties }>;
 export type DayLayoutAlgorithm = 'overlap' | 'no-overlap';
-export type NavigateAction = 'PREV' | 'NEXT' | 'TODAY' | 'DATE';
+export type NavigateAction = 'PREV' | 'NEXT' | 'TODAY' | 'DATE' | 'LISTVIEW';
 export interface Event {
     allDay?: boolean | undefined;
     title?: React.ReactNode | undefined;
@@ -303,6 +303,11 @@ export interface Messages {
     agenda?: string | undefined;
     showMore?: ((count: number) => string) | undefined;
     noEventsInRange?: string | undefined;
+    programarea?: string | undefined;
+    enterdate?: string | undefined;
+    eventtype?: string | undefined;
+    province?: string | undefined;
+    listview?: string | undefined;
 }
 
 /**

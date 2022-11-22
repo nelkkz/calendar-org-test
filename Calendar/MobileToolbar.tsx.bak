@@ -110,111 +110,46 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
     }
   }
 
-  const options_p = [
-    { label: "TC-ECH", value: "948010000" },
-    { label: "OPP", value: "948010001"},
-    { label: "IR", value: "948010002" },
-    { label: "RS", value: "948010003" },
-    { label: "TDG Secretariat", value: "948010004" },
-    { label: "TDG Safety Awareness", value: "948010005" }
+  const options = [
+    { label: "Coach Event", value: "coach" },
+    { label: "FrontDesk Event", value: "frontdesk"},
+    { label: "Manager Event", value: "manager" },
   ];
 
-  const [selected_p, setSelected_p] = React.useState<Option[]>([
-    { label: "TC-ECH", value: "948010000" },
-    { label: "OPP", value: "948010001"},
-    { label: "IR", value: "948010002" },
-    { label: "RS", value: "948010003" },
-    { label: "TDG Secretariat", value: "948010004" },
-    { label: "TDG Safety Awareness", value: "948010005" }
+  const [selected, setSelected] = React.useState<Option[]>([
+    { label: "Coach Event", value: "coach" },
+    { label: "FrontDesk Event", value: "frontdesk"},
+    { label: "Manager Event", value: "manager" },
   ]);
 
-  const options_t = [
-    { label: "Assembly", value: "t948010002_" },
-    { label: "Bilateral Meeting", value: "t13_"},
-    { label: "Capacity Development Activities", value: "t7_" },
-    { label: "Conference", value: "t4_" },
-    { label: "Coordination", value: "t8_" },
-    { label: "Informal Meeting", value: "t948010003_" },
-    { label: "Inspections", value: "t12_" },
-    { label: "Meeting", value: "t2_" },
-    { label: "Multilateral", value: "t948010000_" },
-    { label: "Mutual Recognition", value: "t948010001_" },
-    { label: "Other", value: "t10_" },
-    { label: "Panel", value: "t1_" },
-    { label: "Symposium", value: "t5_" },
-    { label: "Task Force", value: "t6_" },
-    { label: "Working Group", value: "t3_" },
-    { label: "Workshop", value: "t9_" },
-    { label: "Virtual Meeting", value: "t948010004_" }
-  ];
-  const [selected_t, setSelected_t] = React.useState<Option[]>([
-    { label: "Assembly", value: "t948010002_" },
-    { label: "Bilateral Meeting", value: "t13_"},
-    { label: "Capacity Development Activities", value: "t7_" },
-    { label: "Conference", value: "t4_" },
-    { label: "Coordination", value: "t8_" },
-    { label: "Informal Meeting", value: "t948010003_" },
-    { label: "Inspections", value: "t12_" },
-    { label: "Meeting", value: "t2_" },
-    { label: "Multilateral", value: "t948010000_" },
-    { label: "Mutual Recognition", value: "t948010001_" },
-    { label: "Other", value: "t10_" },
-    { label: "Panel", value: "t1_" },
-    { label: "Symposium", value: "t5_" },
-    { label: "Task Force", value: "t6_" },
-    { label: "Working Group", value: "t3_" },
-    { label: "Workshop", value: "t9_" },
-    { label: "Virtual Meeting", value: "t948010004_" }
-  ]);
-
-  const options_r = [
-    { label: "Alberta", value: "r948010000" },
-    { label: "British Columbia", value: "r948010006"},
-    { label: "Manitoba", value: "r948010002" },
-    { label: "New Brunswick", value: "r948010010" },
-    { label: "Newfoundland &amp; Labrador", value: "r948010011" },
-    { label: "Northwest Territories", value: "r948010004" },
-    { label: "Nova Scotia", value: "r948010009" },
-    { label: "Nunavut", value: "r948010005" },
-    { label: "Ontario", value: "r948010007" },
-    { label: "Prince Edward Island", value: "r948010012" },
-    { label: "Quebec", value: "r948010008" },
-    { label: "Saskatchewan", value: "r948010001" },
-    { label: "Yukon", value: "r948010003" }
+  const optionsProvince = [
+    { label: "Ontario", value: "on" },
+    { label: "Alberta", value: "ab"},
+    { label: "Manitoba", value: "mn" },
   ];
 
-  const [selected_r, setSelected_r] = React.useState<Option[]>([
-    { label: "Alberta", value: "r948010000" },
-    { label: "British Columbia", value: "r948010006"},
-    { label: "Manitoba", value: "r948010002" },
-    { label: "New Brunswick", value: "r948010010" },
-    { label: "Newfoundland &amp; Labrador", value: "r948010011" },
-    { label: "Northwest Territories", value: "r948010004" },
-    { label: "Nova Scotia", value: "r948010009" },
-    { label: "Nunavut", value: "r948010005" },
-    { label: "Ontario", value: "r948010007" },
-    { label: "Prince Edward Island", value: "r948010012" },
-    { label: "Quebec", value: "r948010008" },
-    { label: "Saskatchewan", value: "r948010001" },
-    { label: "Yukon", value: "r948010003" }
+  const [selectedProvince, setSelectedProvince] = React.useState<Option[]>([
+    { label: "Ontario", value: "on" },
+    { label: "Alberta", value: "ab"},
+    { label: "Manitoba", value: "mn" },
   ]);
-  const onSelectMulti_p = (selected: []) => {
-    setSelected_p(selected);
+
+
+  const onSelectMulti = (selected: []) => {
+    setSelected(selected);
     props.onFilter(selected);
   }
-  const onSelectMulti_t = (selected: []) => {
-    setSelected_t(selected);
+
+
+  const onSelectMultiProvince = (selected: []) => {
+    setSelectedProvince(selected);
     props.onFilter(selected);
   }
-  const onSelectMulti_r = (selected: []) => {
-    setSelected_r(selected);
-    props.onFilter(selected);
-  }
+
   const selectedToString = (items: Option[]) => {
     let values = items.map(a => a.value);
     return values.join(',');
   }
-  // handle date input
   const formatDate = () : string => {
     let d = new Date();
     return [d.getFullYear(), d.getMonth() + 1, d.getDate()].join('-')
@@ -247,35 +182,8 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
     //inputDateSelected(formatDate());
   });
 
-
   return (
     <div>
-      <div className="rbc-toolbar">
-          {messages.programarea}: <span>&nbsp;</span>
-          <MultiSelect
-            options={options_p}
-            value={selected_p}
-            labelledBy="Select program areas"
-            onChange={onSelectMulti_p}
-            />
-          <span>&nbsp;&nbsp;</span>
-          {messages.eventtype}: <span>&nbsp;</span>
-          <MultiSelect
-            options={options_t}
-            value={selected_t}
-            labelledBy="Select event types"
-            onChange={onSelectMulti_t}
-            />
-            <span>&nbsp;&nbsp;</span>
-          {messages.province}: <span>&nbsp;</span>
-          <MultiSelect
-            options={options_r}
-            value={selected_r}
-            labelledBy="Select provinces"
-            onChange={onSelectMulti_r}
-            />
-            
-      </div>
       <div className="rbc-toolbar">
         <span className="rbc-btn-group">
           <button
@@ -296,22 +204,43 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
             >
               {messages.next}
           </button>
-          &nbsp;&nbsp;{messages.enterdate}:&nbsp;
-          <input type="text" 
-            placeholder="yyyy-mm-dd"
-            value={inputDate} 
-            style={{'width': '140px','height': '29px', 'padding': '0px'}}
-            onChange={handleInputDate} />
-          <button
-            type="button"
-            onClick={handleDateChange}>
-            Go
-          </button>
         </span>
         <span className="rbc-toolbar-label">{props.label}</span>
         <span className="rbc-btn-group">{getViewNamesGroup(messages)}</span>
-        <span>&nbsp;&nbsp;</span>
-        <span className="rbc-btn-group"><button type="button" onClick={navigate.bind(null, 'LISTVIEW')}>{messages.listview}</button></span>
+
+      </div>
+      <div className="rbc-toolbar">
+          Enter a date: 
+          <input type="text" 
+            placeholder="yyyy-mm-dd"
+            value={inputDate} 
+            style={{'width': '140px'}}
+            onChange={handleInputDate} />
+          <button
+            onClick={handleDateChange}>
+            <FaCheck style={{color: 'grey', fontSize: '18px'}}/>
+          </button>
+
+          Filter event: 
+          <MultiSelect
+            options={options}
+            value={selected}
+            labelledBy="Select event types"
+            onChange={onSelectMulti}
+            />
+
+          &nbsp;
+          Filter provice: 
+          <MultiSelect
+            options={optionsProvince}
+            value={selectedProvince}
+            labelledBy="Province"
+            onChange={onSelectMultiProvince}
+            />
+          &nbsp;<a href={"https://www.google.com?type=" 
+          + selectedToString(selected)
+          + "&province="
+          + selectedToString(selectedProvince)}>List view</a>
       </div>
     </div>
   )
