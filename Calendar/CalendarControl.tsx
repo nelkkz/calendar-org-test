@@ -17,6 +17,8 @@ import * as Color from 'color'
 import {MobileToolbar, ToolbarColor} from './MobileToolbar'
 import { inherits } from 'util';
 import { FaRegCalendarAlt, FaRegCalendarCheck, FaRegCalendarPlus, FaRegCalendar } from "react-icons/fa";
+import ReactTooltip from 'react-tooltip';
+import PureModal from 'react-pure-modal';
 import { WindowContext } from '@fluentui/react';
 var CustomWorkWeek = require('./MyWorkWeek');
 var isHexColor = require('is-hexcolor');
@@ -72,27 +74,151 @@ const [calendarDataSave, setCalendarDataSave] = React.useState<{resources: any[]
 const [calendarDate, setCalendarDate] = React.useState(props.pcfContext.parameters.calendarDate?.raw?.getTime() === 0 ? moment().toDate() : (props.pcfContext.parameters.calendarDate?.raw || moment().toDate()));
 const calendarRef = React.useRef(null);
 
+const [modal, setModal] = useState(false);
+const [modalEvents, setModalEvents] = React.useState<IEvent[]>([]);
+
+type AppProps = {
+    modal: boolean;
+    modalEvents: IEvent[];
+}
+
+const ModalWithEvents = ({modal, modalEvents}: AppProps) => {
+    return (<PureModal
+    header="Event List"
+    isOpen={modal}
+    closeButton="close"
+    closeButtonPosition="header"
+    onClose={() => {
+      setModal(false);
+      return true;
+    }}
+  >
+  <ul className='event-list'>
+        {modalEvents.map((data) => (
+            <li>
+                <a data-tip data-for={data.title}>{data.title}</a>
+                <ReactTooltip id={data.title as string} place="top" type="dark" effect="float">
+                    <div>
+                        {data.title}
+                    </div>
+                    <div>
+                    </div>
+                    </ReactTooltip>
+            </li>
+        ))}
+      </ul>
+  </PureModal>)
+
+}
+
 const dummyData = [
     {
         start: moment().toDate(),
         end: moment().add(1, "hours").toDate(),
         title: "Event 1",
-        icon: "icon1",
-        filterType: "frontdesk" ,
+        icon: "TC-ECH",
+        filterProg: "TC-ECH",
+        filterType: "Meeting",
+        filterProv: "Ontario"
     },
     {
         start: moment().add(1, "days").toDate(),
         end:  moment().add(1, "days").add(1, "hours").toDate(),
         title: "Event2",
-        icon: "icon2",
-        filterType: "coach"
+        icon: "TC-ECH",
+        filterProg: "TC-ECH",
+        filterType: "Meeting",
+        filterProv: "Ontario"
     },
     {
         start: moment().add(2, "hours").toDate(),
         end: moment().add(3, "hours").toDate(),
         title: "Event 3",
-        icon: "icon1",
-        filterType: "frontdesk" ,
+        icon: "TC-ECH",
+        filterProg: "TC-ECH",
+        filterType: "Meeting",
+        filterProv: "Ontario"
+    },
+    {
+        start: moment().add(2, "hours").toDate(),
+        end: moment().add(3, "hours").toDate(),
+        title: "Event 3",
+        icon: "TC-ECH",
+        filterProg: "TC-ECH",
+        filterType: "Meeting",
+        filterProv: "Ontario"
+    },
+    {
+        start: moment().add(2, "hours").toDate(),
+        end: moment().add(3, "hours").toDate(),
+        title: "Event 3",
+        icon: "TC-ECH",
+        filterProg: "TC-ECH",
+        filterType: "Meeting",
+        filterProv: "Ontario"
+    },
+    {
+        start: moment().add(2, "hours").toDate(),
+        end: moment().add(3, "hours").toDate(),
+        title: "Event 3",
+        icon: "TC-ECH",
+        filterProg: "TC-ECH",
+        filterType: "Meeting",
+        filterProv: "Ontario"
+    },
+    {
+        start: moment().add(2, "hours").toDate(),
+        end: moment().add(3, "hours").toDate(),
+        title: "Event 3",
+        icon: "TC-ECH",
+        filterProg: "TC-ECH",
+        filterType: "Meeting",
+        filterProv: "Ontario"
+    },
+    {
+        start: moment().add(2, "hours").toDate(),
+        end: moment().add(3, "hours").toDate(),
+        title: "Event 3",
+        icon: "TC-ECH",
+        filterProg: "TC-ECH",
+        filterType: "Meeting",
+        filterProv: "Ontario"
+    },
+    {
+        start: moment().add(2, "hours").toDate(),
+        end: moment().add(3, "hours").toDate(),
+        title: "Event 3",
+        icon: "TC-ECH",
+        filterProg: "TC-ECH",
+        filterType: "Meeting",
+        filterProv: "Ontario"
+    },
+    {
+        start: moment().add(2, "hours").toDate(),
+        end: moment().add(3, "hours").toDate(),
+        title: "Event 3",
+        icon: "TC-ECH",
+        filterProg: "TC-ECH",
+        filterType: "Meeting",
+        filterProv: "Ontario"
+    },
+    {
+        start: moment().add(2, "hours").toDate(),
+        end: moment().add(3, "hours").toDate(),
+        title: "Event 3",
+        icon: "TC-ECH",
+        filterProg: "TC-ECH",
+        filterType: "Meeting",
+        filterProv: "Ontario"
+    },
+    {
+        start: moment().add(2, "hours").toDate(),
+        end: moment().add(3, "hours").toDate(),
+        title: "Event 3",
+        icon: "TC-ECH",
+        filterProg: "TC-ECH",
+        filterType: "Meeting",
+        filterProv: "Ontario"
     },
     
 ];
@@ -278,6 +404,14 @@ const generateThemeCSS = () : string =>{
     }
     .rmsc input[type=checkbox] {
         width:auto;
+    }
+    .body-modal-fix{height:100%;width:100%;overflow:hidden}.pure-modal-backdrop{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1040;background-color:rgba(0,0,0,.4);display:flex;flex-direction:column;justify-content:center;align-items:center}.backdrop-overflow-hidden{overflow:hidden!important}.pure-modal-backdrop .pure-modal{width:300px;max-width:100%;box-sizing:border-box;transition:all .2s ease-in-out;max-height:100%}.pure-modal.auto-height{position:static}.pure-modal-backdrop.scrollable{overflow-y:auto}.pure-modal-backdrop .panel{display:grid;grid-template-rows:repeat(3,min-content)}.pure-modal-backdrop:not(.scrollable) .panel{grid-template-rows:min-content minmax(0,1fr) min-content;max-height:-moz-available;max-height:-webkit-fill-available;max-height:fill-available;height:100%}.pure-modal>*>*{flex:0 0 auto}.pure-modal>*>.scrollable{overflow-x:hidden;overflow-scrolling:touch}@media (max-width:480px){.pure-modal-backdrop .pure-modal{width:100%}}.pure-modal .panel-body{background-color:#fff}.pure-modal .panel-heading{background:#f0f0f0}.pure-modal .panel-title{padding:12px 45px 12px 15px;margin:0}.pure-modal .close{right:10px;top:10px;z-index:1;background:hsla(0,0%,94.1%,.8);width:30px;color:#8c8c8c;transition:color .1s ease-in-out;height:30px;border-radius:15px;text-align:center;line-height:30px;cursor:pointer}.pure-modal .panel-heading .close:hover{color:#000}.pure-modal .panel-body{padding:15px}.pure-modal .panel-footer{padding:12px 45px 12px 15px;background:#f0f0f0}.pure-modal .panel-body,.pure-modal .panel-footer,.pure-modal .panel-title{word-break:break-all}.pure-modal-backdrop .additional-row,.pure-modal-backdrop:not(.scrollable) .additional-row{display:grid;grid-template-rows:min-content minmax(0,1fr) min-content min-content}
+    .event-list {
+        padding: 0;
+        list-style-type: none;
+    }
+    .event-list li {
+        text-align: left;
     }    
     `;
 }
@@ -396,9 +530,19 @@ const EventComponent = () => (props: any) => {
     //{props.event.icon === 'TC-ECH'?  <FaRegCalendar style={{color: 'green', fontSize: '18px'}}/> : <FaRegCalendar style={{color: 'yellow', fontSize: '18px'}}/>} {props.event.title}
 
     return (
-      <div className="rbc-event-content" title={props.event.title + ' \r\n' + props.event.icon}>
-        {props.event.icon === 'TC-ECH'?  <FaRegCalendar style={{color: 'green', fontSize: '18px'}}/> : props.event.icon === 'OPP' ? <FaRegCalendarAlt style={{color: 'yellow', fontSize: '18px'}}/> : <FaRegCalendarCheck style={{color: 'blue', fontSize: '18px'}}/>} {props.event.title}
-      </div>
+      <div className="rbc-event-content">
+        <a data-tip data-for={props.event.title}>
+            {props.event.title}
+        </a>
+        <ReactTooltip id={props.event.title} place="top" type="dark" effect="float">
+            <div>
+                {props.event.title}
+            </div>
+            <div>
+            {props.event.icon === 'TC-ECH'?  <FaRegCalendar style={{color: 'green', fontSize: '18px'}}/> : props.event.icon === 'OPP' ? <FaRegCalendarAlt style={{color: 'yellow', fontSize: '18px'}}/> : <FaRegCalendarCheck style={{color: 'blue', fontSize: '18px'}}/>} {props.event.title}
+            </div>
+        </ReactTooltip>
+        </div>
     );
 };
 
@@ -469,7 +613,7 @@ const timeGutterHeader = ()=> {
     ) 
 }
 
-return(!calendarData?.resources ? <Calendar    
+return(!calendarData?.resources ? <><Calendar    
     selectable
     localizer={localizer}
     date={calendarDate}
@@ -486,6 +630,8 @@ return(!calendarData?.resources ? <Calendar
     onNavigate={ _handleNavigate }
     onView={ _handleOnView }
     onFilter={ _handleFilter_p }
+    onShowMore={(events, date) => {setModal(true);setModalEvents(events);}}
+    doShowMoreDrillDown={false}
     ref={calendarRef}    
     className={`rbc-view-${calendarView}`}
     eventPropGetter={eventPropsGetter}
@@ -498,8 +644,14 @@ return(!calendarData?.resources ? <Calendar
         timeGutterHeader: timeGutterHeader,
         event: EventComponent(),
     }}
-    />: 
-    <Calendar
+    />
+    <ModalWithEvents
+        modal={modal}
+        modalEvents={modalEvents}
+    />
+    </>: 
+    
+    <><Calendar
     selectable
     localizer={localizer}
     date={calendarDate}
@@ -515,6 +667,8 @@ return(!calendarData?.resources ? <Calendar
     onNavigate={ _handleNavigate }
     onView={ _handleOnView }
     onFilter={ _handleFilter_p }
+    onShowMore={(events, date) => {setModal(true);setModalEvents(events);}}
+    doShowMoreDrillDown={false}
     resources={calendarData.resources}
     resourceAccessor="resource"
     ref={calendarRef}    
@@ -530,7 +684,12 @@ return(!calendarData?.resources ? <Calendar
         timeGutterHeader: timeGutterHeader,
         event:EventComponent(),        
     }}
-    />);
+    />
+    <ModalWithEvents
+        modal={modal}
+        modalEvents={modalEvents}
+    />
+    </>);
 }
 
 //gets all the fields names and other keys will will need while processing the data
