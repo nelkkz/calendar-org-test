@@ -96,7 +96,7 @@ const ModalWithEvents = ({modal, modalEvents}: AppProps) => {
   <ul className='event-list'>
         {modalEvents.map((data) => (
             <li>
-                <a data-tip data-for={data.title}>{data.title}</a>
+                <a data-tip data-for={data.title} onClick={() => _handleNavigate(new Date(), '', 'LISTVIEW')}>{data.title}</a>
                 <ReactTooltip id={data.title as string} place="top" type="dark" effect="float">
                     <div>
                         {data.title}
@@ -474,7 +474,6 @@ const _handleSlotSelect = (slotInfo: any) => {
 //required event when using a variable for the Calendar Date
 const _handleNavigate = (date: Date, view: string, action: string) => {  
     //const viewid = props.pcfContext.parameters.calendarDataSet.getViewId();
-    //alert(viewid);
     if(action === "LISTVIEW"){
         var openUrlOptions = { height: 600, width: 1100 };
         //&appid=02fa0613-e620-487a-87da-e69740297de1
