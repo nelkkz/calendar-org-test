@@ -2,7 +2,7 @@ import * as PropTypes from 'prop-types'
 import * as React from 'react';
 import clsx from 'clsx'
 import * as Color from 'color'
-import { ToolbarProps, NavigateAction, View, Messages } from 'react-big-calendar-ex'
+import { ToolbarProps, NavigateAction, View, Messages, DateRange } from 'react-big-calendar-ex'
 import { Dropdown, DropdownMenuItemType, IDropdownStyles, IDropdownOption } from 'office-ui-fabric-react/lib/Dropdown';
 import { CommandBarButton, IButtonProps } from 'office-ui-fabric-react/lib/Button';
 import { CommandBar, ICommandBarItemProps, ICommandBarData, } from 'office-ui-fabric-react/lib/CommandBar';
@@ -14,6 +14,7 @@ import { initializeIcons } from '@uifabric/icons';
 import {useSwipeable} from 'react-swipeable';
 import { MultiSelect,Option } from "react-multi-select-component";
 import { FaCheck  } from "react-icons/fa";
+import DateRangePicker from "react-daterange-picker";
 
 const overflowProps: IButtonProps = { ariaLabel: 'More commands' };
 
@@ -210,6 +211,16 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
     setSelected_r(selected);
     props.onFilter(selected);
   }
+  const onToggle = () => {
+    setIsOpen(!isOpen);
+  }
+  const onSelect = (states) => {
+    setDateRage(states);
+
+    props.onFilter([{value: 'dr' + states.start.format("YYYY-MM-DD")},
+      {value: 'dr' + states.end.format("YYYY-MM-DD")}]);
+    setIsOpen(false);
+  }
   const selectedToString = (items: Option[]) => {
     let values = items.map(a => a.value);
     return values.join(',');
@@ -221,6 +232,8 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
   }
 
   const [inputDate, inputDateSelected] = React.useState<string>('');
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [dateRage, setDateRage] = React.useState<DateRange>();
 
   const handleInputDate = (e: any) => {
     inputDateSelected(e.target.value);
@@ -297,16 +310,34 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
               {messages.next}
           </button>
           &nbsp;&nbsp;{messages.enterdate}:&nbsp;
+
           <input type="text" 
             placeholder="yyyy-mm-dd"
             value={inputDate} 
             style={{'width': '140px','height': '29px', 'padding': '0px'}}
             onChange={handleInputDate} />
+          
           <button
             type="button"
             onClick={handleDateChange}>
             Go
           </button>
+          &nbsp;&nbsp;
+          <input 
+            type="button"
+            value={messages.enterdate}
+            onClick={onToggle}
+            />
+            
+            {isOpen && (
+              <DateRangePicker
+                value={dateRage}
+                onSelect={onSelect}
+                singleDateRange={true}
+                />
+              )}
+
+
         </span>
         <span className="rbc-toolbar-label">{props.label}</span>
         <span className="rbc-btn-group">{getViewNamesGroup(messages)}</span>

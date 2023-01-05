@@ -19,14 +19,16 @@
     "is-hexcolor": "^1.0.0",
     "lcid": "^3.1.1",
     "moment": "^2.29.1",
+    "moment-range": "^4.0.2",
     "office-ui-fabric-react": "^7.199.4",
     "react": "^17.0.2",
     "react-big-calendar-ex": "^1.5.0",
+    "react-daterange-picker": "^2.0.1",
     "react-dom": "^17.0.2",
     "react-icons": "^4.6.0",
     "react-multi-select-component": "^4.3.4",
-    "react-swipeable": "^6.1.2",
     "react-pure-modal": "^2.2.0",
+    "react-swipeable": "^6.1.2",
     "react-tooltip": "^4.4.3"
   },
   "devDependencies": {
