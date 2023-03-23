@@ -82,6 +82,41 @@ type AppProps = {
     modalEvents: IEvent[];
 }
 
+type FilterPopupProps = {
+    modal: boolean;
+}
+
+const ModalWithFilters = ({modal}: FilterPopupProps) => {
+    return (<PureModal
+        header="Filters"
+        isOpen={modal}
+        closeButton="close"
+        closeButtonPosition="header"
+        onClose={() => {
+          setModal(false);
+          return true;
+        }}
+      >
+      <div className="row">
+        <div className="column">
+            <h2>Column 1</h2>
+            <p>Some text..</p>
+        </div>
+        <div className="column">
+            <h2>Column 2</h2>
+            <p>Some text..</p>
+        </div>
+        <div className="column">
+            <h2>Column 3</h2>
+            <p>Some text..</p>
+        </div>
+    </div>
+
+
+      </PureModal>)
+}
+
+
 const ModalWithEvents = ({modal, modalEvents}: AppProps) => {
     return (<PureModal
     header="Event List"
@@ -642,6 +677,18 @@ const generateThemeCSS = () : string =>{
           text-align: center;
           width: 100%;
           z-index: 1; }
+        .column {
+            float: left;
+            width: 33.33%;
+            padding: 10px;
+            height: 300px; /* Should be removed. Only for demonstration */
+        }
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+          
           
     `;
 }
@@ -878,6 +925,10 @@ return(!calendarData?.resources ? <><Calendar
         modal={modal}
         modalEvents={modalEvents}
     />
+    <ModalWithFilters
+        modal={modal}
+    />
+
     </>: 
     
     <><Calendar
@@ -917,6 +968,9 @@ return(!calendarData?.resources ? <><Calendar
     <ModalWithEvents
         modal={modal}
         modalEvents={modalEvents}
+    />
+    <ModalWithFilters
+        modal={modal}
     />
     </>);
 }
