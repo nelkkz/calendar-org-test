@@ -1,5 +1,6 @@
 import * as PropTypes from 'prop-types'
 import * as React from 'react';
+import { useState } from 'react';
 import clsx from 'clsx'
 import * as Color from 'color'
 import { ToolbarProps, NavigateAction, View, Messages, DateRange } from 'react-big-calendar-ex'
@@ -13,14 +14,237 @@ import { memoizeFunction } from 'office-ui-fabric-react/lib/Utilities';
 import { initializeIcons } from '@uifabric/icons';
 import {useSwipeable} from 'react-swipeable';
 import { MultiSelect,Option } from "react-multi-select-component";
-import { FaCheck  } from "react-icons/fa";
+import { IoMdCloseCircle } from "react-icons/io";
 import DateRangePicker from "react-daterange-picker";
+import PureModal from 'react-pure-modal';
 
 const overflowProps: IButtonProps = { ariaLabel: 'More commands' };
 
 initializeIcons();
 
 export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
+
+  type FilterPopupProps = {
+    modal: boolean;
+  }
+
+  const onFilterClick = () => {
+    setModal(true);
+  }
+
+  const [modal, setModal] = useState(false);
+
+  const ModalWithFilters = ({modal}: FilterPopupProps) => {
+    return (<PureModal
+        className="filterModal"
+        header=""
+        isOpen={modal}
+        closeButton={<IoMdCloseCircle color="black"/>}
+        closeButtonPosition="header"
+        width="900px"
+        onClose={() => {
+          setModal(false);
+          return true;
+        }}
+      >
+      <div className="row">
+        <div className="column">
+            <h2 className="filterHeader">Event Details</h2>
+            <hr></hr>
+
+            <input type="text" 
+                placeholder="Event name"
+                className="rmsc filterInput"
+              />
+
+            <MultiSelect
+              className="filterSelect"
+              options={optionsEngagement}
+              value={selectedEngagement}
+              labelledBy="Level of Engagement"
+              valueRenderer={(selected: typeof optionsEngagement) => {
+                if (!selected.length) {
+                  return "Level of Engagement";
+                }
+                if (selected.length = optionsEngagement.length) {
+                  return "Level of Engagement selected";
+                }
+              }}
+              onChange={onSelectMultiEngagement}
+              closeOnChangedValue={false}
+            />
+
+            <MultiSelect
+              className="filterSelect"
+              options={optionsAttendance}
+              value={selectedAttendance}
+              labelledBy="Executive Attendance"
+              valueRenderer={(selected: typeof optionsAttendance) => {
+                if (!selected.length) {
+                  return "Executive Attendance";
+                }
+                if (selected.length = optionsAttendance.length) {
+                  return "Executive Attendance selected";
+                }
+              }}
+              onChange={onSelectMultiAttendance}
+            />
+
+            <MultiSelect
+              className="filterSelect"
+              options={optionsMethod}
+              value={selectedMethod}
+              labelledBy="Engagement Method"
+              valueRenderer={(selected: typeof optionsMethod) => {
+                if (!selected.length) {
+                  return "Engagement Method";
+                }
+                if (selected.length = optionsMethod.length) {
+                  return "Engagement Method selected";
+                }
+              }}
+              onChange={onSelectMultiMethod}
+            />
+
+            <MultiSelect
+              className="filterSelect"
+              options={optionsType}
+              value={selectedType}
+              labelledBy="Event Type"
+              valueRenderer={(selected: typeof optionsType) => {
+                if (!selected.length) {
+                  return "Event Type";
+                }
+                if (selected.length = optionsType.length) {
+                  return "Event Type selected";
+                }
+              }}
+              onChange={onSelectMultiType}
+            />
+
+            <MultiSelect
+              className="filterSelect"
+              options={optionsIndigenous}
+              value={selectedIndigenous}
+              labelledBy="Indigenous Engagements"
+              valueRenderer={(selected: typeof optionsIndigenous) => {
+                if (!selected.length) {
+                  return "Indigenous Engagements";
+                }
+                if (selected.length = optionsIndigenous.length) {
+                  return "Indigenous Engagements selected";
+                }
+              }}
+              onChange={onSelectIndigenous}
+            />
+
+        </div>
+        <div className="column">
+            <h2 className="filterHeader">Organization & Contacts</h2>
+            <hr></hr>
+            <MultiSelect
+              className="filterSelect"
+              options={optionsCategory}
+              value={selectedCategory}
+              labelledBy="Organization Categoy(ies)"
+              valueRenderer={(selected: typeof optionsCategory) => {
+                if (!selected.length) {
+                  return "Organization Categoy(ies)";
+                }
+                if (selected.length = optionsCategory.length) {
+                  return "Organization Categoy(ies) selected";
+                }
+              }}
+              onChange={onSelectCategory}
+            />
+            <MultiSelect
+              className="filterSelect"
+              options={optionsContact}
+              value={selectedContact}
+              labelledBy="Contact(s)"
+              valueRenderer={(selected: typeof optionsContact) => {
+                if (!selected.length) {
+                  return "Contact(s)";
+                }
+                if (selected.length = optionsContact.length) {
+                  return "Contact(s) selected";
+                }
+              }}
+              onChange={onSelectContact}
+            />
+            <h2 className="filterHeader">OPP</h2>
+            <hr></hr>
+            <MultiSelect
+              className="filterSelect"
+              options={optionsPillars}
+              value={selectedPillars}
+              labelledBy="OPP Pillars"
+              valueRenderer={(selected: typeof optionsPillars) => {
+                if (!selected.length) {
+                  return "OPP Pillars";
+                }
+                if (selected.length = optionsPillars.length) {
+                  return "OPP Pillars selected";
+                }
+              }}
+              onChange={onSelectPillars}
+            />
+            <MultiSelect
+              className="filterSelect"
+              options={optionsInitiatives}
+              value={selectedInitiatives}
+              labelledBy="CPP Initiatives"
+              valueRenderer={(selected: typeof optionsInitiatives) => {
+                if (!selected.length) {
+                  return "CPP Initiatives";
+                }
+                if (selected.length = optionsInitiatives.length) {
+                  return "CPP Initiatives selected";
+                }
+              }}
+              onChange={onSelectInitiatives}
+            />
+        </div>
+        <div className="column">
+            <h2 className="filterHeader">Regions</h2>
+            <hr></hr>
+            <MultiSelect
+              className="filterSelect"
+              options={optionsProgram}
+              value={selectedProgram}
+              labelledBy="Program Area Region(s)"
+              valueRenderer={(selected: typeof optionsProgram) => {
+                if (!selected.length) {
+                  return "Program Area Region(s)";
+                }
+                if (selected.length = optionsProgram.length) {
+                  return "Program Area Region(s) selected";
+                }
+              }}
+              onChange={onSelectProgram}
+            />
+            <MultiSelect
+              className="filterSelect"
+              options={optionsCorporate}
+              value={selectedCorporate}
+              labelledBy="Corporate Region(s)"
+              valueRenderer={(selected: typeof optionsCorporate) => {
+                if (!selected.length) {
+                  return "Corporate Region(s)";
+                }
+                if (selected.length = optionsCorporate.length) {
+                  return "Corporate Region(s) selected";
+                }
+              }}
+              onChange={onSelectCorporate}
+            />
+        </div>
+    </div>
+
+
+      </PureModal>)
+  }
+
   const messages = props.localizer.messages;
 
   const getViewNamesGroup = (messages: any) : any => {
@@ -211,6 +435,172 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
     setSelected_r(selected);
     props.onFilter(selected);
   }
+
+  const optionsEngagement = [
+    { label: "Level Engagement 1", value: "1" },
+    { label: "Level Engagement 2", value: "2" },
+  ];
+
+  const [selectedEngagement, setSelectedEngagement] = React.useState<Option[]>([
+    { label: "Level Engagement 1", value: "1" },
+    { label: "Level Engagement 2", value: "2" },
+  ]);
+
+  const onSelectMultiEngagement = (selected: []) => {
+    setSelectedEngagement(selected);
+    //props.onFilter(selected);
+  }
+
+  const optionsAttendance = [
+    { label: "Level Attendance 1", value: "1" },
+    { label: "Level Attendance 2", value: "2" },
+  ];
+
+  const [selectedAttendance, setSelectedAttendance] = React.useState<Option[]>([
+    { label: "Level Attendance 1", value: "1" },
+    { label: "Level Attendance 2", value: "2" },
+  ]);
+
+  const onSelectMultiAttendance = (selected: []) => {
+    setSelectedAttendance(selected);
+    //props.onFilter(selected);
+  }
+
+  const optionsMethod = [
+    { label: "Method 1", value: "1" },
+    { label: "Method 2", value: "2" },
+  ];
+
+  const [selectedMethod, setSelectedMethod] = React.useState<Option[]>([
+    { label: "Method 1", value: "1" },
+    { label: "Method 2", value: "2" },
+  ]);
+
+  const onSelectMultiMethod = (selected: []) => {
+    setSelectedMethod(selected);
+    //props.onFilter(selected);
+  }
+
+  const optionsType = [
+    { label: "Event Type 1", value: "1" },
+    { label: "Event Type  2", value: "2" },
+  ];
+
+  const [selectedType, setSelectedType] = React.useState<Option[]>([
+    { label: "Event Type 1", value: "1" },
+    { label: "Event Type  2", value: "2" },
+  ]);
+
+  const onSelectMultiType = (selected: []) => {
+    setSelectedType(selected);
+    //props.onFilter(selected);
+  }
+
+  const optionsIndigenous = [
+    { label: "Indigenous Engagement 1", value: "1" },
+    { label: "Indigenous Engagement 2", value: "2" },
+  ];
+
+  const [selectedIndigenous, setSelectedIndigenous] = React.useState<Option[]>([
+    { label: "Indigenous Engagement 1", value: "1" },
+    { label: "Indigenous Engagement 2", value: "2" },
+  ]);
+
+  const onSelectIndigenous = (selected: []) => {
+    setSelectedIndigenous(selected);
+    //props.onFilter(selected);
+  }
+
+  const optionsCategory = [
+    { label: "Organization Category 1", value: "1" },
+    { label: "Organization Category 2", value: "2" },
+  ];
+
+  const [selectedCategory, setSelectedCategory] = React.useState<Option[]>([
+    { label: "Organization Category 1", value: "1" },
+    { label: "Organization Category 2", value: "2" },
+  ]);
+
+  const onSelectCategory = (selected: []) => {
+    setSelectedCategory(selected);
+    //props.onFilter(selected);
+  }
+
+  const optionsContact = [
+    { label: "Contact 1", value: "1" },
+    { label: "Contact 2", value: "2" },
+  ];
+
+  const [selectedContact, setSelectedContact] = React.useState<Option[]>([
+    { label: "Contact 1", value: "1" },
+    { label: "Contact 2", value: "2" },
+  ]);
+
+  const onSelectContact = (selected: []) => {
+    setSelectedContact(selected);
+    //props.onFilter(selected);
+  }
+
+  const optionsPillars = [
+    { label: "OPP Pillars 1", value: "1" },
+    { label: "OPP Pillars 2", value: "2" },
+  ];
+
+  const [selectedPillars, setSelectedPillars] = React.useState<Option[]>([
+    { label: "OPP Pillars 1", value: "1" },
+    { label: "OPP Pillars 2", value: "2" },
+  ]);
+
+  const onSelectPillars = (selected: []) => {
+    setSelectedPillars(selected);
+    //props.onFilter(selected);
+  }
+
+  const optionsInitiatives = [
+    { label: "OPP Initiatives 1", value: "1" },
+    { label: "OPP Initiatives 2", value: "2" },
+  ];
+
+  const [selectedInitiatives, setSelectedInitiatives] = React.useState<Option[]>([
+    { label: "OPP Initiatives 1", value: "1" },
+    { label: "OPP Initiatives 2", value: "2" },
+  ]);
+
+  const onSelectInitiatives = (selected: []) => {
+    setSelectedInitiatives(selected);
+    //props.onFilter(selected);
+  }
+
+  const optionsProgram = [
+    { label: "Program Area Regions 1", value: "1" },
+    { label: "Program Area Regions 2", value: "2" },
+  ];
+
+  const [selectedProgram, setSelectedProgram] = React.useState<Option[]>([
+    { label: "Program Area Regions 1", value: "1" },
+    { label: "Program Area Regions 2", value: "2" },
+  ]);
+
+  const onSelectProgram = (selected: []) => {
+    setSelectedProgram(selected);
+    //props.onFilter(selected);
+  }
+
+  const optionsCorporate = [
+    { label: "Corporate Regions 1", value: "1" },
+    { label: "Corporate Regions 2", value: "2" },
+  ];
+
+  const [selectedCorporate, setSelectedCorporate] = React.useState<Option[]>([
+    { label: "Corporate Regions 1", value: "1" },
+    { label: "Corporate Regions 2", value: "2" },
+  ]);
+
+  const onSelectCorporate = (selected: []) => {
+    setSelectedCorporate(selected);
+    //props.onFilter(selected);
+  }
+
   const onToggle = () => {
     setIsOpen(!isOpen);
   }
@@ -263,6 +653,9 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
 
   return (
     <div>
+      <ModalWithFilters
+        modal={modal}
+      />
       <div className="rbc-toolbar">
           {messages.programarea}: <span>&nbsp;</span>
           <MultiSelect
@@ -287,6 +680,13 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
             labelledBy="Select provinces"
             onChange={onSelectMulti_r}
             />
+
+            <button
+              type="button"
+              onClick={onFilterClick}
+            >
+              {'Filter'}
+            </button>
             
       </div>
       <div className="rbc-toolbar">
