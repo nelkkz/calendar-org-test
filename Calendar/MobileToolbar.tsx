@@ -39,7 +39,7 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
         className="filterModal"
         header=""
         isOpen={modal}
-        closeButton={<IoMdCloseCircle color="black"/>}
+        closeButton={<IoMdCloseCircle color="black" size="30"/>}
         closeButtonPosition="header"
         width="900px"
         onClose={() => {
@@ -71,7 +71,6 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
                 }
               }}
               onChange={onSelectMultiEngagement}
-              closeOnChangedValue={false}
             />
 
             <MultiSelect
