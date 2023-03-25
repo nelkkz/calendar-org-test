@@ -670,6 +670,14 @@ const generateThemeCSS = () : string =>{
         .filterSelect {
             margin: 0 0 18px 0;
         }
+        .filterClose {
+            position: absolute;
+            right:10px;
+            width:30px;
+        }
+        .pure-modal .close {
+            display:none;
+        }
           
           
     `;

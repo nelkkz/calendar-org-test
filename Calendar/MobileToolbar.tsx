@@ -43,10 +43,14 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
         closeButtonPosition="header"
         width="900px"
         onClose={() => {
-          setModal(false);
-          return true;
+          console.log('closed me');
+       //   setModal(false);
+        //  return true;
+        return false;
         }}
       >
+      <IoMdCloseCircle className="filterClose" color="black" size="30" onClick={()=>{setModal(false)}}/>
+
       <div className="row">
         <div className="column">
             <h2 className="filterHeader">Event Details</h2>
@@ -66,11 +70,11 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
                 if (!selected.length) {
                   return "Level of Engagement";
                 }
-                if (selected.length = optionsEngagement.length) {
-                  return "Level of Engagement selected";
+                if (selected.length == optionsEngagement.length) {
+                  return "All Level of Engagemen selected";
                 }
               }}
-              onChange={onSelectMultiEngagement}
+              onChange={setSelectedEngagement}
             />
 
             <MultiSelect
@@ -82,11 +86,11 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
                 if (!selected.length) {
                   return "Executive Attendance";
                 }
-                if (selected.length = optionsAttendance.length) {
-                  return "Executive Attendance selected";
+                if (selected.length == optionsAttendance.length) {
+                  return "All Executive Attendance selected";
                 }
               }}
-              onChange={onSelectMultiAttendance}
+              onChange={setSelectedAttendance}
             />
 
             <MultiSelect
@@ -98,11 +102,11 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
                 if (!selected.length) {
                   return "Engagement Method";
                 }
-                if (selected.length = optionsMethod.length) {
-                  return "Engagement Method selected";
+                if (selected.length == optionsMethod.length) {
+                  return "All Engagement Method selected";
                 }
               }}
-              onChange={onSelectMultiMethod}
+              onChange={setSelectedMethod}
             />
 
             <MultiSelect
@@ -114,11 +118,11 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
                 if (!selected.length) {
                   return "Event Type";
                 }
-                if (selected.length = optionsType.length) {
-                  return "Event Type selected";
+                if (selected.length == optionsType.length) {
+                  return "All Event Type selected";
                 }
               }}
-              onChange={onSelectMultiType}
+              onChange={setSelectedType}
             />
 
             <MultiSelect
@@ -130,11 +134,11 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
                 if (!selected.length) {
                   return "Indigenous Engagements";
                 }
-                if (selected.length = optionsIndigenous.length) {
-                  return "Indigenous Engagements selected";
+                if (selected.length == optionsIndigenous.length) {
+                  return "All Indigenous Engagements selected";
                 }
               }}
-              onChange={onSelectIndigenous}
+              onChange={setSelectedIndigenous}
             />
 
         </div>
@@ -150,11 +154,11 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
                 if (!selected.length) {
                   return "Organization Categoy(ies)";
                 }
-                if (selected.length = optionsCategory.length) {
-                  return "Organization Categoy(ies) selected";
+                if (selected.length == optionsCategory.length) {
+                  return "All Organization Categoy(ies) selected";
                 }
               }}
-              onChange={onSelectCategory}
+              onChange={setSelectedCategory}
             />
             <MultiSelect
               className="filterSelect"
@@ -165,11 +169,11 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
                 if (!selected.length) {
                   return "Contact(s)";
                 }
-                if (selected.length = optionsContact.length) {
-                  return "Contact(s) selected";
+                if (selected.length == optionsContact.length) {
+                  return "All Contact(s) selected";
                 }
               }}
-              onChange={onSelectContact}
+              onChange={setSelectedContact}
             />
             <h2 className="filterHeader">OPP</h2>
             <hr></hr>
@@ -182,11 +186,11 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
                 if (!selected.length) {
                   return "OPP Pillars";
                 }
-                if (selected.length = optionsPillars.length) {
-                  return "OPP Pillars selected";
+                if (selected.length == optionsPillars.length) {
+                  return "All OPP Pillars selected";
                 }
               }}
-              onChange={onSelectPillars}
+              onChange={setSelectedPillars}
             />
             <MultiSelect
               className="filterSelect"
@@ -197,11 +201,11 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
                 if (!selected.length) {
                   return "CPP Initiatives";
                 }
-                if (selected.length = optionsInitiatives.length) {
-                  return "CPP Initiatives selected";
+                if (selected.length == optionsInitiatives.length) {
+                  return "All CPP Initiatives selected";
                 }
               }}
-              onChange={onSelectInitiatives}
+              onChange={setSelectedInitiatives}
             />
         </div>
         <div className="column">
@@ -216,11 +220,11 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
                 if (!selected.length) {
                   return "Program Area Region(s)";
                 }
-                if (selected.length = optionsProgram.length) {
-                  return "Program Area Region(s) selected";
+                if (selected.length == optionsProgram.length) {
+                  return "All Program Area Region(s) selected";
                 }
               }}
-              onChange={onSelectProgram}
+              onChange={setSelectedProgram}
             />
             <MultiSelect
               className="filterSelect"
@@ -231,11 +235,11 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
                 if (!selected.length) {
                   return "Corporate Region(s)";
                 }
-                if (selected.length = optionsCorporate.length) {
-                  return "Corporate Region(s) selected";
+                if (selected.length == optionsCorporate.length) {
+                  return "All Corporate Region(s) selected";
                 }
               }}
-              onChange={onSelectCorporate}
+              onChange={setSelectedCorporate}
             />
         </div>
     </div>
@@ -653,8 +657,8 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
   return (
     <div>
       <ModalWithFilters
-        modal={modal}
-      />
+        modal={modal} />
+
       <div className="rbc-toolbar">
           {messages.programarea}: <span>&nbsp;</span>
           <MultiSelect
