@@ -14,7 +14,7 @@ import { memoizeFunction } from 'office-ui-fabric-react/lib/Utilities';
 import { initializeIcons } from '@uifabric/icons';
 import {useSwipeable} from 'react-swipeable';
 import { MultiSelect,Option } from "react-multi-select-component";
-import { IoMdCloseCircle } from "react-icons/io";
+import { IoMdCloseCircle, IoIosCheckmark } from "react-icons/io";
 import DateRangePicker from "react-daterange-picker";
 import PureModal from 'react-pure-modal';
 
@@ -32,6 +32,102 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
     setModal(true);
   }
 
+ //filter popup otions
+ const [inputName, setInputName] = React.useState<string>('');
+ const handleInputName = (e: any) => {
+   setInputName(e.target.value);
+ }
+  const [optionsEngagement, setOptionsEngagement]  = React.useState<Option[]>([]);
+  const [selectedEngagement, setSelectedEngagement] = React.useState<Option[]>([]);
+  const onSelectMultiEngagement = (selected: []) => { setSelectedEngagement(selected); }
+
+  const [optionsAttendance, setOptionsAttendance] = React.useState<Option[]>([]);
+  const [selectedAttendance, setSelectedAttendance] = React.useState<Option[]>([]);
+  const onSelectMultiAttendance = (selected: []) => { setSelectedAttendance(selected); }
+
+  const [optionsMethod, setOptionsMethod] = React.useState<Option[]>([]);
+  const [selectedMethod, setSelectedMethod] = React.useState<Option[]>([]);
+  const onSelectMultiMethod = (selected: []) => { setSelectedMethod(selected); }
+
+  const [optionsType, setOptionsType] = React.useState<Option[]>([]);
+  const [selectedType, setSelectedType] = React.useState<Option[]>([]);
+  const onSelectMultiType = (selected: []) => { setSelectedType(selected); }
+
+  const [optionsIndigenous, setOptionsIndigenous] = React.useState<Option[]>([]);
+  const [selectedIndigenous, setSelectedIndigenous] = React.useState<Option[]>([]);
+  const onSelectIndigenous = (selected: []) => {  setSelectedIndigenous(selected); }
+
+  const [optionsCategory, setOptionsCategory] = React.useState<Option[]>([]);
+  const [selectedCategory, setSelectedCategory] = React.useState<Option[]>([]);
+  const onSelectCategory = (selected: []) => { setSelectedCategory(selected); }
+
+  const [optionsContact, setOptionsContact] = React.useState<Option[]>([]);
+  const [selectedContact, setSelectedContact] = React.useState<Option[]>([]);
+  const onSelectContact = (selected: []) => { setSelectedContact(selected); }
+
+  const [optionsPillars, setOptionsPillars] = React.useState<Option[]>([]);
+  const [selectedPillars, setSelectedPillars] = React.useState<Option[]>([]);
+  const onSelectPillars = (selected: []) => { setSelectedPillars(selected); }
+
+  const [optionsInitiatives, setOptionsInitiatives] = React.useState<Option[]>([]);
+  const [selectedInitiatives, setSelectedInitiatives] = React.useState<Option[]>([]);
+  const onSelectInitiatives = (selected: []) => { setSelectedInitiatives(selected); }
+
+  const [optionsProgram, setOptionsProgram] = React.useState<Option[]>([]);
+  const [selectedProgram, setSelectedProgram] = React.useState<Option[]>([]);
+  const onSelectProgram = (selected: []) => { setSelectedProgram(selected); }
+
+  const [optionsCorporate, setOptionsCorporate] = React.useState<Option[]>([]);
+  const [selectedCorporate, setSelectedCorporate] = React.useState<Option[]>([]);
+  const onSelectCorporate = (selected: []) => {  setSelectedCorporate(selected); }
+
+  React.useEffect(()=>{
+    //inputDateSelected(formatDate());
+    console.log('get filters from toolbar');
+    var filters = props.getFilters();
+    console.log(filters);
+
+    for (var i=0, len = filters.length; i< len; i++) {
+      if (filters[i].type === "engagement") {
+        setOptionsEngagement(filters[i].filters);
+        setSelectedEngagement(filters[i].filters);
+      } else if (filters[i].type === "attendance") {
+        setOptionsAttendance(filters[i].filters);
+        setSelectedAttendance(filters[i].filters);
+      } else if (filters[i].type === "method") {
+        setOptionsMethod(filters[i].filters);
+        setSelectedMethod(filters[i].filters);
+      } else if (filters[i].type === "type") {
+        setOptionsType(filters[i].filters);
+        setSelectedType(filters[i].filters);
+      } else if (filters[i].type === "indigenous") {
+        setOptionsIndigenous(filters[i].filters);
+        setSelectedIndigenous(filters[i].filters);
+      } else if (filters[i].type === "category") {
+        setOptionsCategory(filters[i].filters);
+        setSelectedCategory(filters[i].filters);
+      } else if (filters[i].type === "contact") {
+        setOptionsContact(filters[i].filters);
+        setSelectedContact(filters[i].filters);
+      } else if (filters[i].type === "pillars") {
+        setOptionsPillars(filters[i].filters);
+        setSelectedPillars(filters[i].filters);
+      } else if (filters[i].type === "initiatives") {
+        setOptionsInitiatives(filters[i].filters);
+        setSelectedInitiatives(filters[i].filters);
+      } else if (filters[i].type === "program") {
+        setOptionsProgram(filters[i].filters);
+        setSelectedProgram(filters[i].filters);
+      } else if (filters[i].type === "corporate") {
+        setOptionsCorporate(filters[i].filters);
+        setSelectedCorporate(filters[i].filters);
+      }
+
+    }
+
+  }, []);
+
+
   const [modal, setModal] = useState(false);
 
   const ModalWithFilters = ({modal}: FilterPopupProps) => {
@@ -46,11 +142,20 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
           console.log('closed me');
        //   setModal(false);
         //  return true;
-        return false;
+        return true;
         }}
       >
-      <IoMdCloseCircle className="filterClose" color="black" size="30" onClick={()=>{setModal(false)}}/>
+      <IoIosCheckmark className="filterApply" color="green" size="30" onClick={()=>{
+        console.log('filter clicked');
+        console.log(optionsEngagement);
+        props.onListView();
+      }} />
 
+      <IoMdCloseCircle className="filterClose" color="black" size="30" onClick={()=>{
+        setModal(false);
+
+      }}/>
+      
       <div className="row">
         <div className="column">
             <h2 className="filterHeader">Event Details</h2>
@@ -58,6 +163,8 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
 
             <input type="text" 
                 placeholder="Event name"
+                value={inputName}
+                onChange={handleInputName}
                 className="rmsc filterInput"
               />
 
@@ -74,7 +181,7 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
                   return "All Level of Engagemen selected";
                 }
               }}
-              onChange={setSelectedEngagement}
+              onChange={onSelectMultiEngagement}
             />
 
             <MultiSelect
@@ -270,7 +377,7 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
 
   const navigate = (action: NavigateAction): void => {
     props.onNavigate(action)
-  }
+  } 
 
   const handlers = useSwipeable({
       onSwipedLeft: (eventData) => navigate.bind(null, 'PREV'),
@@ -439,170 +546,7 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
     props.onFilter(selected);
   }
 
-  const optionsEngagement = [
-    { label: "Level Engagement 1", value: "1" },
-    { label: "Level Engagement 2", value: "2" },
-  ];
-
-  const [selectedEngagement, setSelectedEngagement] = React.useState<Option[]>([
-    { label: "Level Engagement 1", value: "1" },
-    { label: "Level Engagement 2", value: "2" },
-  ]);
-
-  const onSelectMultiEngagement = (selected: []) => {
-    setSelectedEngagement(selected);
-    //props.onFilter(selected);
-  }
-
-  const optionsAttendance = [
-    { label: "Level Attendance 1", value: "1" },
-    { label: "Level Attendance 2", value: "2" },
-  ];
-
-  const [selectedAttendance, setSelectedAttendance] = React.useState<Option[]>([
-    { label: "Level Attendance 1", value: "1" },
-    { label: "Level Attendance 2", value: "2" },
-  ]);
-
-  const onSelectMultiAttendance = (selected: []) => {
-    setSelectedAttendance(selected);
-    //props.onFilter(selected);
-  }
-
-  const optionsMethod = [
-    { label: "Method 1", value: "1" },
-    { label: "Method 2", value: "2" },
-  ];
-
-  const [selectedMethod, setSelectedMethod] = React.useState<Option[]>([
-    { label: "Method 1", value: "1" },
-    { label: "Method 2", value: "2" },
-  ]);
-
-  const onSelectMultiMethod = (selected: []) => {
-    setSelectedMethod(selected);
-    //props.onFilter(selected);
-  }
-
-  const optionsType = [
-    { label: "Event Type 1", value: "1" },
-    { label: "Event Type  2", value: "2" },
-  ];
-
-  const [selectedType, setSelectedType] = React.useState<Option[]>([
-    { label: "Event Type 1", value: "1" },
-    { label: "Event Type  2", value: "2" },
-  ]);
-
-  const onSelectMultiType = (selected: []) => {
-    setSelectedType(selected);
-    //props.onFilter(selected);
-  }
-
-  const optionsIndigenous = [
-    { label: "Indigenous Engagement 1", value: "1" },
-    { label: "Indigenous Engagement 2", value: "2" },
-  ];
-
-  const [selectedIndigenous, setSelectedIndigenous] = React.useState<Option[]>([
-    { label: "Indigenous Engagement 1", value: "1" },
-    { label: "Indigenous Engagement 2", value: "2" },
-  ]);
-
-  const onSelectIndigenous = (selected: []) => {
-    setSelectedIndigenous(selected);
-    //props.onFilter(selected);
-  }
-
-  const optionsCategory = [
-    { label: "Organization Category 1", value: "1" },
-    { label: "Organization Category 2", value: "2" },
-  ];
-
-  const [selectedCategory, setSelectedCategory] = React.useState<Option[]>([
-    { label: "Organization Category 1", value: "1" },
-    { label: "Organization Category 2", value: "2" },
-  ]);
-
-  const onSelectCategory = (selected: []) => {
-    setSelectedCategory(selected);
-    //props.onFilter(selected);
-  }
-
-  const optionsContact = [
-    { label: "Contact 1", value: "1" },
-    { label: "Contact 2", value: "2" },
-  ];
-
-  const [selectedContact, setSelectedContact] = React.useState<Option[]>([
-    { label: "Contact 1", value: "1" },
-    { label: "Contact 2", value: "2" },
-  ]);
-
-  const onSelectContact = (selected: []) => {
-    setSelectedContact(selected);
-    //props.onFilter(selected);
-  }
-
-  const optionsPillars = [
-    { label: "OPP Pillars 1", value: "1" },
-    { label: "OPP Pillars 2", value: "2" },
-  ];
-
-  const [selectedPillars, setSelectedPillars] = React.useState<Option[]>([
-    { label: "OPP Pillars 1", value: "1" },
-    { label: "OPP Pillars 2", value: "2" },
-  ]);
-
-  const onSelectPillars = (selected: []) => {
-    setSelectedPillars(selected);
-    //props.onFilter(selected);
-  }
-
-  const optionsInitiatives = [
-    { label: "OPP Initiatives 1", value: "1" },
-    { label: "OPP Initiatives 2", value: "2" },
-  ];
-
-  const [selectedInitiatives, setSelectedInitiatives] = React.useState<Option[]>([
-    { label: "OPP Initiatives 1", value: "1" },
-    { label: "OPP Initiatives 2", value: "2" },
-  ]);
-
-  const onSelectInitiatives = (selected: []) => {
-    setSelectedInitiatives(selected);
-    //props.onFilter(selected);
-  }
-
-  const optionsProgram = [
-    { label: "Program Area Regions 1", value: "1" },
-    { label: "Program Area Regions 2", value: "2" },
-  ];
-
-  const [selectedProgram, setSelectedProgram] = React.useState<Option[]>([
-    { label: "Program Area Regions 1", value: "1" },
-    { label: "Program Area Regions 2", value: "2" },
-  ]);
-
-  const onSelectProgram = (selected: []) => {
-    setSelectedProgram(selected);
-    //props.onFilter(selected);
-  }
-
-  const optionsCorporate = [
-    { label: "Corporate Regions 1", value: "1" },
-    { label: "Corporate Regions 2", value: "2" },
-  ];
-
-  const [selectedCorporate, setSelectedCorporate] = React.useState<Option[]>([
-    { label: "Corporate Regions 1", value: "1" },
-    { label: "Corporate Regions 2", value: "2" },
-  ]);
-
-  const onSelectCorporate = (selected: []) => {
-    setSelectedCorporate(selected);
-    //props.onFilter(selected);
-  }
+ 
 
   const onToggle = () => {
     setIsOpen(!isOpen);
@@ -649,9 +593,6 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
     props.onNavigate('DATE',  date);
   }
 
-  React.useEffect(()=>{
-    //inputDateSelected(formatDate());
-  });
 
 
   return (

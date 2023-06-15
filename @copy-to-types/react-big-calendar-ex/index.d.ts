@@ -247,6 +247,8 @@ export interface ToolbarProps<TEvent extends object = Event, TResource extends o
     onNavigate: (navigate: NavigateAction, date?: Date) => void;
     onView: (view: View) => void;
     onFilter: (filter: any[]) => void;
+    onListView: () => void;
+    getFilters: () => any[];
     children?: React.ReactNode | undefined;
 }
 
@@ -376,6 +378,8 @@ export interface CalendarProps<TEvent extends object = Event, TResource extends 
     onNavigate?: ((newDate: Date, view: View, action: NavigateAction) => void) | undefined;
     onView?: ((view: View) => void) | undefined;
     onFilter?: ((filter: any[] ) => void) | undefined;
+    onListView?: (() => void ) | undefined;
+    getFilters?: (() => any[] ) | undefined;
     onDrillDown?: ((date: Date, view: View) => void) | undefined;
     onSelectSlot?: ((slotInfo: SlotInfo) => void) | undefined;
     onDoubleClickEvent?: ((event: TEvent, e: React.SyntheticEvent<HTMLElement>) => void) | undefined;

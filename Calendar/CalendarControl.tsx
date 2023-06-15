@@ -782,6 +782,96 @@ const _handleFilter_p = (filter: any[]) => {
     return;
 }
 
+const _handleListView = () => {
+    console.log('list view selected');
+}
+
+const _getFilters = () =>  {
+
+    console.log('get filters in calendar control');
+
+    return [
+        {   
+            type: "engagement", 
+            filters : [
+                { label: "Level Engagement 4", value: "4" },
+                { label: "Level Engagement 5", value: "5" },
+            ]
+        },
+        {
+            type: "attendance", 
+            filters : [
+                { label: "Level Attendance 1", value: "1" },
+                { label: "Level Attendance 2", value: "2" },
+            ]
+        },
+        {
+            type: "method", 
+            filters : [
+                { label: "Method 1", value: "1" },
+                { label: "Method 2", value: "2" },
+            ]
+        },
+        {
+            type: "type", 
+            filters : [
+                { label: "Event Type 1", value: "1" },
+                { label: "Event Type  2", value: "2" },
+            ]
+        },
+        {
+            type: "indigenous", 
+            filters : [
+                { label: "Indigenous Engagement 1", value: "1" },
+                { label: "Indigenous Engagement 2", value: "2" },
+            ]
+        },
+        {
+            type: "category", 
+            filters : [
+                { label: "Organization Category 1", value: "1" },
+                { label: "Organization Category 2", value: "2" },
+            ]
+        },
+        {
+            type: "contact", 
+            filters : [
+                { label: "Contact 1", value: "1" },
+                { label: "Contact 2", value: "2" },
+            ]
+        },
+        {
+            type: "pillars", 
+            filters : [
+                { label: "OPP Pillars 1", value: "1" },
+                { label: "OPP Pillars 2", value: "2" },
+            ]
+        },
+        {
+            type: "initiatives", 
+            filters : [
+                { label: "OPP Initiatives 1", value: "1" },
+                { label: "OPP Initiatives 2", value: "2" },
+            ]
+        },
+        {
+            type: "program", 
+            filters : [
+                { label: "Program Area Regions 1", value: "1" },
+                { label: "Program Area Regions 2", value: "2" },
+            ]
+        },
+        {
+            type: "corporate", 
+            filters : [
+                { label: "Corporate Regions 1", value: "1" },
+                { label: "Corporate Regions 2", value: "2" },
+            ]
+        },
+    ];
+    
+}
+
 const EventComponent = () => (props: any) => {
     var iconTag = "";
     if((props.event.icon === 'TC-ECH')){
@@ -896,6 +986,8 @@ return(!calendarData?.resources ? <><Calendar
     onNavigate={ _handleNavigate }
     onView={ _handleOnView }
     onFilter={ _handleFilter_p }
+    onListView={ _handleListView }
+    getFilters={ _getFilters }
     onShowMore={(events, date) => {setModal(true);setModalEvents(events);}}
     doShowMoreDrillDown={false}
     ref={calendarRef}    
@@ -933,6 +1025,8 @@ return(!calendarData?.resources ? <><Calendar
     onNavigate={ _handleNavigate }
     onView={ _handleOnView }
     onFilter={ _handleFilter_p }
+    onListView={ _handleListView }
+    getFilters={ _getFilters }
     onShowMore={(events, date) => {setModal(true);setModalEvents(events);}}
     doShowMoreDrillDown={false}
     resources={calendarData.resources}
