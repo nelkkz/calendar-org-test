@@ -675,6 +675,11 @@ const generateThemeCSS = () : string =>{
             right:10px;
             width:30px;
         }
+        .filterApply {
+            position: absolute;
+            right:40px;
+            width:30px;
+        }
         .pure-modal .close {
             display:none;
         }
@@ -752,6 +757,7 @@ const _handleNavigate = (date: Date, view: string, action: string) => {
 const _handleFilter_p = (filter: any[]) => {    
     //manipulate data by filter
     let filters = filter.map(a => a.value);
+    console.log('filter triggered');
     console.log('filters', filters);
     
     const resources = calendarDataSave.resources;
@@ -784,6 +790,10 @@ const _handleFilter_p = (filter: any[]) => {
 
 const _handleListView = () => {
     console.log('list view selected');
+    var openUrlOptions = { height: 600, width: 1100 };
+    //&appid=02fa0613-e620-487a-87da-e69740297de1
+    props.pcfContext.navigation.openUrl( "./main.aspx?appid=02fa0613-e620-487a-87da-e69740297de1&forceUCI=1&pagetype=entitylist&etn=tc_yyevent&viewid=b8152d4f-4f51-ed11-bba3-002248d51737&viewType=1039");
+
 }
 
 const _getFilters = () =>  {
