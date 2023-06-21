@@ -37,11 +37,15 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
     props.onListView();
   }
 
+  const handleOnFilter = () => {
+        //TODO: combine selected filter items and call parent with filters.
+        const filters = [selectedEngagement, selectedAttendance, selectedMethod, selectedType,selectedIndigenous,
+          selectedCategory, selectedContact, selectedPillars, selectedInitiatives, selectedProgram, selectedCorporate]
+        props.onFilter(filters);
+  }
+
  //filter popup otions
- const [inputName, setInputName] = React.useState<string>('');
- const handleInputName = (e: any) => {
-   setInputName(e.target.value);
- }
+
   const [optionsEngagement, setOptionsEngagement]  = React.useState<Option[]>([]);
   const [selectedEngagement, setSelectedEngagement] = React.useState<Option[]>([]);
   const onSelectMultiEngagement = (selected: []) => { setSelectedEngagement(selected); }
@@ -392,8 +396,7 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
         }}
       >
       <IoIosCheckmarkCircleOutline className="filterApply" color="green" size="30" onClick={()=>{
-        //TODO: combine selected filter items and call parent with filters.
-        props.onFilter([]);
+        handleOnFilter();
         setModal(false);
       }} />
 
@@ -405,13 +408,6 @@ export const MobileToolbar: React.FC<ToolbarProps<Event, any>> = (props) =>  {
         <div className="column">
             <h2 className="filterHeader">Event Details</h2>
             <hr></hr>
-
-            <input type="text" 
-                placeholder="Event name"
-                value={inputName}
-                onChange={handleInputName}
-                className="rmsc filterInput"
-              />
 
             <MultiSelect
               className="filterSelect"

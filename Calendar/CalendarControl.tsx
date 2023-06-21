@@ -755,10 +755,12 @@ const _handleNavigate = (date: Date, view: string, action: string) => {
 }
 
 const _handleFilter_p = (filter: any[]) => {    
+    console.log('filter triggered');
+    console.log(filter);
+
+    //
     //manipulate data by filter
     let filters = filter.map(a => a.value);
-    console.log('filter triggered');
-    console.log('filters', filters);
     
     const resources = calendarDataSave.resources;
     let events = calendarDataSave.events;
